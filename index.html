@@ -1,649 +1,842 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Peta RT RW & Penduduk Kota Pontianak 2025</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Peta RT RW & Penduduk Kota Pontianak 2025</title>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css">
-<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css">
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
-<script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
 
-body{
-  font-family:'Inter',sans-serif;
-}
+    body {
+      font-family: 'Inter', sans-serif;
+    }
 
-#map{
-  height:75vh;
-  min-height:500px;
-  border-radius:16px;
-}
+    #map {
+      height: 75vh;
+      min-height: 500px;
+      border-radius: 16px;
+    }
 
-.glass{
-  background:rgba(15,23,42,.9);
-  backdrop-filter:blur(12px);
-  border:1px solid rgba(255,255,255,.1);
-}
+    .glass {
+      background: rgba(15, 23, 42, .9);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, .1);
+    }
 
-header img{
-  filter:drop-shadow(0 2px 6px rgba(0,0,0,.4));
-}
+    header img {
+      filter: drop-shadow(0 2px 6px rgba(0, 0, 0, .4));
+    }
 
-/* Custom Marker Styles */
-.custom-marker {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  border: 3px solid white;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,.3);
-  font-weight: 800;
-  color: white;
-  font-size: 14px;
-}
+    /* Custom Marker Styles */
+    .custom-marker {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      border: 3px solid white;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, .3);
+      font-weight: 800;
+      color: white;
+      font-size: 14px;
+    }
 
-.custom-marker-large {
-  width: 44px;
-  height: 44px;
-  font-size: 16px;
-  background: linear-gradient(135deg, #059669 0%, #047857 100%);
-}
+    .custom-marker-large {
+      width: 44px;
+      height: 44px;
+      font-size: 16px;
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    }
 
-/* Marker Cluster Styles */
-.marker-cluster {
-  background: rgba(16, 185, 129, 0.6);
-  border: 3px solid rgba(5, 150, 105, 0.8);
-}
+    /* Marker Cluster Styles */
+    .marker-cluster {
+      background: rgba(16, 185, 129, 0.6);
+      border: 3px solid rgba(5, 150, 105, 0.8);
+    }
 
-.marker-cluster div {
-  background: rgba(5, 150, 105, 0.8);
-  color: white;
-  font-weight: 700;
-}
+    .marker-cluster div {
+      background: rgba(5, 150, 105, 0.8);
+      color: white;
+      font-weight: 700;
+    }
 
-/* Animation */
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-}
+    /* Animation */
+    @keyframes pulse {
 
-.pulse-animation {
-  animation: pulse 2s infinite;
-}
+      0%,
+      100% {
+        transform: scale(1);
+      }
 
-/* Info Card */
-.info-card {
-  background: linear-gradient(135deg, rgba(5, 150, 105, 0.95) 0%, rgba(4, 120, 87, 0.95) 100%);
-  border-radius: 12px;
-  padding: 16px;
-  color: white;
-  box-shadow: 0 8px 24px rgba(0,0,0,.3);
-}
+      50% {
+        transform: scale(1.05);
+      }
+    }
 
-.info-card h4 {
-  font-size: 18px;
-  font-weight: 800;
-  margin-bottom: 12px;
-  border-bottom: 2px solid rgba(255,255,255,.3);
-  padding-bottom: 8px;
-}
+    .pulse-animation {
+      animation: pulse 2s infinite;
+    }
 
-.info-card p {
-  margin: 6px 0;
-  display: flex;
-  justify-content: space-between;
-  font-size: 14px;
-}
+    /* Info Card */
+    .info-card {
+      background: linear-gradient(135deg, rgba(5, 150, 105, 0.95) 0%, rgba(4, 120, 87, 0.95) 100%);
+      border-radius: 12px;
+      padding: 16px;
+      color: white;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .3);
+    }
 
-.info-card b {
-  font-weight: 700;
-  margin-left: 8px;
-}
+    .info-card h4 {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      border-bottom: 2px solid rgba(255, 255, 255, .3);
+      padding-bottom: 8px;
+    }
 
-/* Legend */
-.legend {
-  background: rgba(15, 23, 42, 0.95);
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(255,255,255,.1);
-}
+    .info-card p {
+      margin: 6px 0;
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
 
-.legend-item {
-  display: flex;
-  align-items: center;
-  margin: 6px 0;
-  font-size: 12px;
-}
+    .info-card b {
+      font-weight: 700;
+      margin-left: 8px;
+    }
 
-.legend-color {
-  width: 30px;
-  height: 18px;
-  margin-right: 8px;
-  border-radius: 4px;
-  border: 1px solid rgba(255,255,255,.2);
-}
+    /* Stats Badge */
+    .stats-badge {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 700;
+      display: inline-block;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
 
-/* Stats Badge */
-.stats-badge {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-weight: 700;
-  display: inline-block;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-}
+    /* Footer Links */
+    .footer-link {
+      color: #cbd5e1;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
 
-/* Mobile */
-@media(max-width:768px){
-  #map{
-    height:60vh;
-    min-height:400px;
-  }
-}
-</style>
+    .footer-link:hover {
+      color: #10b981;
+      transform: translateX(4px);
+    }
+
+    /* ================= MOBILE OPTIMIZATIONS ================= */
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+
+      /* Header lebih ringkas */
+      header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+      }
+
+      header .flex {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      header h1 {
+        font-size: 1.75rem;
+      }
+
+      header p {
+        font-size: 0.875rem;
+      }
+
+      .stats-badge {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+      }
+
+      /* Map lebih proporsional */
+      #map {
+        height: 55vh;
+        min-height: 380px;
+        border-radius: 12px;
+      }
+
+      /* Grid menjadi 1 kolom, sidebar di atas */
+      .grid-cols-1.lg\:grid-cols-4 {
+        grid-template-columns: 1fr;
+      }
+
+      /* Sidebar lebih kompak */
+      aside .glass {
+        padding: 1rem;
+        border-radius: 14px;
+      }
+
+      aside h3 {
+        font-size: 0.875rem;
+        margin-bottom: 0.75rem;
+      }
+
+      #rank-list>div {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.875rem;
+      }
+
+      #rank-list span:last-child {
+        font-size: 0.75rem;
+      }
+
+      .info-card,
+      .glass p,
+      .text-sm {
+        font-size: 0.8rem !important;
+      }
+
+      /* Statistics panel lebih kecil */
+      #total-penduduk,
+      #total-rw,
+      #total-rt {
+        font-size: 1.5rem;
+      }
+
+      .space-y-3>div>.text-xs {
+        font-size: 0.7rem;
+      }
+
+      /* About section lebih ringkas */
+      .glass p {
+        font-size: 0.875rem;
+        line-height: 1.5;
+      }
+
+      /* Footer lebih sederhana */
+      footer .grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      footer h4 {
+        font-size: 1rem;
+        margin-bottom: 0.75rem;
+      }
+
+      footer .text-sm {
+        font-size: 0.8rem;
+      }
+
+      .footer-link {
+        font-size: 0.875rem;
+      }
+
+      /* Copyright */
+      footer .flex {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+        font-size: 0.75rem;
+      }
+
+      /* Touch target lebih besar untuk daftar kecamatan */
+      #rank-list>div {
+        min-height: 44px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 1.5rem;
+      }
+
+      #map {
+        height: 50vh;
+        min-height: 350px;
+      }
+
+      .stats-badge {
+        font-size: 0.75rem;
+        padding: 5px 10px;
+      }
+    }
+  </style>
 </head>
 
 <body class="bg-slate-900 text-slate-200 p-4 md:p-6">
 
-<div class="max-w-7xl mx-auto space-y-6">
+  <div class="max-w-7xl mx-auto space-y-6">
 
-<!-- HEADER -->
-<header class="flex items-center gap-4 flex-wrap justify-between">
-  <div class="flex items-center gap-4">
-  <div class="h-14 md:h-16 flex items-center">
-    <img
-      src="logo-diskominfo.png"
-      alt="Logo Diskominfo Kota Pontianak"
-      class="h-full w-auto object-contain drop-shadow-md"
-    >
-  </div>
+    <!-- HEADER -->
+    <header class="flex items-center gap-4 flex-wrap justify-between">
+      <div class="flex items-center gap-4">
+        <div class="h-14 md:h-16 flex items-center">
+          <img src="/img/logo-diskominfo.png" alt="Logo Diskominfo Kota Pontianak"
+            class="h-full w-auto object-contain drop-shadow-md">
+        </div>
 
-  <div>
-    <h1 class="text-3xl md:text-4xl font-extrabold text-white">
-      PETA INTERAKTIF RT RW PONTIANAK <span class="text-emerald-400">2025</span>
-    </h1>
-    <p class="text-slate-400 text-sm md:text-base">
-      Visualisasi Peta Data Kependudukan
-    </p>
-    <p class="text-slate-500 text-xs mt-1">
-      Dinas Komunikasi dan Informatika Kota Pontianak
-    </p>
-  </div>
-</div>
-
-  <div class="stats-badge text-sm">
-    <span id="total-markers">0</span> Titik Lokasi
-  </div>
-</header>
-
-<!-- CONTENT -->
-<div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-
-<!-- SIDEBAR -->
-<aside class="space-y-4">
-  <!-- Daftar Kecamatan -->
-  <div class="glass p-5 rounded-2xl">
-    <h3 class="text-sm font-bold uppercase text-emerald-400 mb-4 flex items-center gap-2">
-      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clip-rule="evenodd"/>
-      </svg>
-      Daftar Kecamatan
-    </h3>
-    <div id="rank-list" class="space-y-2"></div>
-  </div>
-
-  <!-- Info Panel -->
-  <div class="glass p-5 rounded-2xl">
-    <h3 class="text-sm font-bold uppercase text-emerald-400 mb-4 flex items-center gap-2">
-      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
-      </svg>
-      Panduan
-    </h3>
-    <div class="text-xs text-slate-300 space-y-2">
-      <p>• <span class="text-emerald-400 font-semibold">Klik wilayah</span> untuk melihat detail dan titik lokasi</p>
-      <p>• <span class="text-emerald-400 font-semibold">Hover</span> untuk highlight wilayah</p>
-      <p>• <span class="text-emerald-400 font-semibold">Klik marker</span> untuk info detail</p>
-      <p>• Marker akan muncul otomatis saat klik wilayah</p>
-    </div>
-  </div>
-
-  <!-- Statistics -->
-  <div class="glass p-5 rounded-2xl">
-    <h3 class="text-sm font-bold uppercase text-emerald-400 mb-4">Total Kota</h3>
-    <div class="space-y-3">
-      <div>
-        <div class="text-xs text-slate-400 mb-1">Total Penduduk</div>
-        <div class="text-2xl font-bold text-white" id="total-penduduk">0</div>
+        <div>
+          <h1 class="text-3xl md:text-4xl font-extrabold text-white">
+            PETA KEPENDUDUKAN PONTIANAK <span class="text-emerald-400">2025</span>
+          </h1>
+          <p class="text-slate-400 text-sm md:text-base">
+            Dinas Komunikasi dan Informatika Kota Pontianak
+          </p>
+        </div>
       </div>
-      <div>
-        <div class="text-xs text-slate-400 mb-1">Total RW</div>
-        <div class="text-2xl font-bold text-emerald-400" id="total-rw">0</div>
+
+      <div class="stats-badge text-sm">
+        <span id="total-markers">0</span> Titik Lokasi
       </div>
-      <div>
-        <div class="text-xs text-slate-400 mb-1">Total RT</div>
-        <div class="text-2xl font-bold text-emerald-400" id="total-rt">0</div>
-      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+
+      <!-- SIDEBAR -->
+      <aside class="space-y-4">
+        <!-- Daftar Kecamatan -->
+        <div class="glass p-5 rounded-2xl">
+          <h3 class="text-sm font-bold uppercase text-emerald-400 mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd"
+                d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z"
+                clip-rule="evenodd" />
+            </svg>
+            Daftar Kecamatan
+          </h3>
+          <div id="rank-list" class="space-y-2"></div>
+        </div>
+
+        <!-- Info Panel -->
+        <div class="glass p-5 rounded-2xl">
+          <h3 class="text-sm font-bold uppercase text-emerald-400 mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                clip-rule="evenodd" />
+            </svg>
+            Panduan
+          </h3>
+          <div class="text-xs text-slate-300 space-y-2">
+            <p>• <span class="text-emerald-400 font-semibold">Klik wilayah</span> untuk melihat detail dan titik lokasi
+            </p>
+            <p>• <span class="text-emerald-400 font-semibold">Hover</span> untuk highlight wilayah</p>
+            <p>• <span class="text-emerald-400 font-semibold">Klik marker</span> untuk info detail</p>
+            <p>• Marker akan muncul otomatis saat klik wilayah</p>
+          </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="glass p-5 rounded-2xl">
+          <h3 class="text-sm font-bold uppercase text-emerald-400 mb-4">DATA KESELURUHAN</h3>
+          <div class="space-y-3">
+            <div>
+              <div class="text-xs text-slate-400 mb-1">Total Penduduk</div>
+              <div class="text-2xl font-bold text-white" id="total-penduduk">0</div>
+            </div>
+            <div>
+              <div class="text-xs text-slate-400 mb-1">Total RW</div>
+              <div class="text-2xl font-bold text-emerald-400" id="total-rw">0</div>
+            </div>
+            <div>
+              <div class="text-xs text-slate-400 mb-1">Total RT</div>
+              <div class="text-2xl font-bold text-emerald-400" id="total-rt">0</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAP -->
+      <section class="lg:col-span-3 space-y-6">
+        <div id="map" class="shadow-2xl border border-slate-700"></div>
+
+        <!-- About Section -->
+        <div class="glass p-6 rounded-2xl">
+          <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+            <svg class="w-6 h-6 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                clip-rule="evenodd" />
+            </svg>
+            TENTANG PETA KEPENDUDUKAN
+          </h3>
+
+          <div class="text-slate-300 space-y-4 leading-relaxed text-sm md:text-base">
+            <p>
+              <span class="font-semibold text-emerald-400">Visualisasi Peta Data Kependudukan Kota Pontianak Tahun
+                2025</span>
+              merupakan media informasi berbasis web yang menyajikan data Rukun Tetangga (RT), Rukun Warga (RW), dan
+              jumlah penduduk
+              di wilayah Kota Pontianak secara visual, informatif, dan mudah dipahami.
+            </p>
+
+            <p>
+              Visualisasi ini dikembangkan sebagai sarana penyediaan data publik untuk mendukung keterbukaan informasi
+              serta
+              memudahkan masyarakat, perangkat daerah, dan pemangku kepentingan dalam mengakses data administratif dan
+              kependudukan
+              secara cepat dan akurat.
+            </p>
+
+            <p>
+              Informasi disajikan dalam bentuk <span class="text-emerald-400 font-semibold">peta interaktif</span>
+              dengan
+              visualisasi wilayah kecamatan, <span class="text-emerald-400 font-semibold">titik lokasi kelurahan</span>,
+              serta <span class="text-emerald-400 font-semibold">ringkasan statistik</span> yang mencakup jumlah
+              penduduk,
+              total RW, dan total RT pada setiap wilayah.
+            </p>
+
+            <p>
+              Data yang ditampilkan bersumber dari perangkat daerah terkait di lingkungan Pemerintah Kota Pontianak dan
+              disajikan sebagai informasi statistik sektoral untuk keperluan pelayanan publik, perencanaan pembangunan,
+              serta kebutuhan analisis dasar.
+            </p>
+
+            <p class="text-emerald-400 font-semibold">
+              Manfaat visualisasi ini antara lain meningkatkan aksesibilitas data kependudukan, mendukung transparansi
+              informasi,
+              serta membantu proses pengambilan keputusan berbasis data di lingkungan Pemerintah Kota Pontianak.
+            </p>
+          </div>
+        </div>
+      </section>
+
     </div>
+
+    <!-- FOOTER -->
+    <footer class="glass rounded-2xl p-8 mt-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
+
+        <!-- Info Kontak -->
+        <div>
+          <h4 class="text-emerald-400 font-bold text-lg mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+              <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+            </svg>
+            Kontak Kami
+          </h4>
+          <div class="text-slate-300 text-sm space-y-3">
+            <p class="flex items-start gap-2">
+              <svg class="w-4 h-4 mt-1 flex-shrink-0 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd"
+                  d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                  clip-rule="evenodd" />
+              </svg>
+              <span>Jl. Rahadi Usman No.1, Pontianak, Kalimantan Barat 78117</span>
+            </p>
+            <p class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+              </svg>
+              <span>(0561) 736711</span>
+            </p>
+            <p class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+              </svg>
+              <span>diskominfo@pontianakkota.go.id</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Tentang -->
+        <div>
+          <h4 class="text-emerald-400 font-bold text-lg mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                clip-rule="evenodd" />
+            </svg>
+            Tentang Portal
+          </h4>
+          <div class="text-slate-300 text-sm space-y-3">
+            <p class="leading-relaxed">Portal Data Statistik Sektoral Kota Pontianak menyediakan akses informasi
+              kependudukan dan administratif secara terbuka dan terintegrasi.</p>
+
+            <div class="pt-3 border-t border-slate-700 space-y-2">
+              <p class="text-xs">
+                <span class="font-semibold text-emerald-400">Sumber Data:</span><br>
+                <span class="text-slate-400">Dinas Kependudukan dan Pencatatan Sipil Kota Pontianak</span>
+              </p>
+              <p class="text-xs">
+                <span class="font-semibold text-emerald-400">Terakhir Diperbarui:</span><br>
+                <span class="text-slate-400">Januari 2025</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Link Terkait -->
+        <div>
+          <h4 class="text-emerald-400 font-bold text-lg mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd"
+                d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5a2 2 0 11-2.828-2.828l3-3z"
+                clip-rule="evenodd" />
+            </svg>
+            Link Terkait
+          </h4>
+
+          <div class="text-sm space-y-3">
+            <a href="https://pontianak.go.id/" target="_blank" class="footer-link">
+              <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+              </svg>
+              <span>Portal Resmi Pemkot Pontianak</span>
+            </a>
+
+            <a href="https://diskominfo.pontianak.go.id/" target="_blank" class="footer-link">
+              <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+              </svg>
+              <span>Diskominfo Kota Pontianak</span>
+            </a>
+
+            <a href="https://satudata.pontianak.go.id/" target="_blank" class="footer-link">
+              <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+              </svg>
+              <span>Satu Data Kota Pontianak</span>
+            </a>
+            <br>
+            <a href="https://data.go.id/" target="_blank" class="footer-link">
+              <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+              </svg>
+              <span>Satu Data Indonesia</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="border-t border-slate-700 pt-6">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
+          <p class="text-slate-300 text-center md:text-left">
+            © 2025 <span class="font-bold text-white">Dinas Komunikasi dan Informatika Kota Pontianak</span>
+          </p>
+          <p class="text-xs text-slate-400">
+            Didukung oleh <span class="text-emerald-400 font-semibold">Satu Data Indonesia</span>
+          </p>
+        </div>
+      </div>
+    </footer>
+
   </div>
-</aside>
 
-<!-- MAP -->
-<section class="lg:col-span-3 space-y-6">
-  <div id="map" class="shadow-2xl border border-slate-700"></div>
-  
-  <!-- About Section -->
-  <div class="glass p-6 rounded-2xl">
-    <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
-      <svg class="w-6 h-6 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
-        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
-      </svg>
-      Tentang Sistem Pemetaan
-    </h3>
-    <div class="text-slate-300 space-y-4 leading-relaxed text-sm md:text-base">
-      <p>
-        <span class="font-semibold text-emerald-400">Sistem Informasi Geografis (SIG) Kota Pontianak 2025</span> merupakan platform digital interaktif yang menyajikan data distribusi Rukun Tetangga (RT), Rukun Warga (RW), dan jumlah penduduk di seluruh wilayah Kota Pontianak secara visual dan terstruktur.
-      </p>
-      <p>
-        Platform ini dikembangkan untuk memudahkan masyarakat, pemangku kepentingan, dan pemerintah daerah dalam mengakses informasi kependudukan dan administratif secara real-time. Dengan teknologi pemetaan modern berbasis web, setiap kecamatan dapat dieksplorasi dengan detail hingga ke tingkat kelurahan.
-      </p>
-      <p>
-        Fitur-fitur yang tersedia meliputi <span class="text-emerald-400 font-semibold">visualisasi peta interaktif</span> dengan kode warna berdasarkan kepadatan RT, <span class="text-emerald-400 font-semibold">marker lokasi kelurahan</span> yang dapat diklik untuk informasi detail, serta <span class="text-emerald-400 font-semibold">statistik komprehensif</span> yang mencakup total penduduk, jumlah RW, dan jumlah RT per kecamatan.
-      </p>
-      <p>
-        Data yang ditampilkan bersumber dari <span class="font-semibold">Dinas Kependudukan dan Pencatatan Sipil Kota Pontianak</span> dan diperbarui secara berkala untuk memastikan akurasi informasi. Sistem ini dirancang dengan antarmuka yang responsif, dapat diakses melalui berbagai perangkat termasuk desktop, tablet, dan smartphone.
-      </p>
-      <p class="text-emerald-400 font-semibold">
-        Manfaat Sistem: Perencanaan pembangunan wilayah yang lebih tepat sasaran, pemantauan distribusi penduduk secara real-time, kemudahan akses data administratif untuk keperluan pelayanan publik, dan transparansi informasi kependudukan untuk seluruh stakeholder.
-      </p>
-    </div>
-  </div>
-</section>
+  <script>
+    // ================= DATA RESMI KOTA PONTIANAK =================
+    const dataPontianak = [
+      {
+        name: "Pontianak Barat",
+        rt: 561,
+        rw: 105,
+        penduduk: 156782,
+        center: [-0.0347, 109.3113],
+        points: [
+          { name: "Kelurahan Sungai Jawi Dalam", lat: -0.0280, lng: 109.3050, rt: 125, rw: 24, penduduk: 35240 },
+          { name: "Kelurahan Sungai Jawi Luar", lat: -0.0320, lng: 109.3100, rt: 118, rw: 22, penduduk: 31450 },
+          { name: "Kelurahan Sungai Belitung Darat", lat: -0.0380, lng: 109.3080, rt: 102, rw: 19, penduduk: 28620 },
+          { name: "Kelurahan Sungai Belitung Laut", lat: -0.0420, lng: 109.3140, rt: 98, rw: 18, penduduk: 27342 },
+          { name: "Kelurahan Pal Lima", lat: -0.0360, lng: 109.3180, rt: 118, rw: 22, penduduk: 34130 }
+        ]
+      },
+      {
+        name: "Pontianak Kota",
+        rt: 520,
+        rw: 121,
+        penduduk: 32580,
+        center: [-0.0263, 109.3425],
+        points: [
+          { name: "Kelurahan Tengah", lat: -0.0240, lng: 109.3400, rt: 142, rw: 32, penduduk: 8965 },
+          { name: "Kelurahan Darat Sekip", lat: -0.0270, lng: 109.3450, rt: 135, rw: 31, penduduk: 8420 },
+          { name: "Kelurahan Sungai Bangkong", lat: -0.0290, lng: 109.3380, rt: 128, rw: 29, penduduk: 7835 },
+          { name: "Kelurahan Mariana", lat: -0.0250, lng: 109.3480, rt: 115, rw: 29, penduduk: 7360 }
+        ]
+      },
+      {
+        name: "Pontianak Selatan",
+        rt: 413,
+        rw: 92,
+        penduduk: 68234,
+        center: [-0.0500, 109.3350],
+        points: [
+          { name: "Kelurahan Akcaya", lat: -0.0480, lng: 109.3320, rt: 108, rw: 24, penduduk: 18240 },
+          { name: "Kelurahan Bangka Belitung Darat", lat: -0.0520, lng: 109.3380, rt: 96, rw: 22, penduduk: 16890 },
+          { name: "Kelurahan Bangka Belitung Laut", lat: -0.0540, lng: 109.3420, rt: 112, rw: 25, penduduk: 19356 },
+          { name: "Kelurahan Parit Tokaya", lat: -0.0460, lng: 109.3280, rt: 97, rw: 21, penduduk: 13748 }
+        ]
+      },
+      {
+        name: "Pontianak Tenggara",
+        rt: 190,
+        rw: 47,
+        penduduk: 180288,
+        center: [-0.0100, 109.3650],
+        points: [
+          { name: "Kelurahan Bansir Laut", lat: -0.0080, lng: 109.3620, rt: 68, rw: 17, penduduk: 64820 },
+          { name: "Kelurahan Bansir Darat", lat: -0.0120, lng: 109.3680, rt: 72, rw: 18, penduduk: 68540 },
+          { name: "Kelurahan Parit Mayor", lat: -0.0140, lng: 109.3640, rt: 50, rw: 12, penduduk: 46928 }
+        ]
+      },
+      {
+        name: "Pontianak Timur",
+        rt: 421,
+        rw: 86,
+        penduduk: 92345,
+        center: [-0.0150, 109.3550],
+        points: [
+          { name: "Kelurahan Saigon", lat: -0.0130, lng: 109.3520, rt: 115, rw: 24, penduduk: 25680 },
+          { name: "Kelurahan Tanjung Hilir", lat: -0.0170, lng: 109.3580, rt: 98, rw: 20, penduduk: 21540 },
+          { name: "Kelurahan Tanjung Hulu", lat: -0.0180, lng: 109.3600, rt: 105, rw: 21, penduduk: 23285 },
+          { name: "Kelurahan Banjar Serasan", lat: -0.0120, lng: 109.3490, rt: 103, rw: 21, penduduk: 21840 }
+        ]
+      },
+      {
+        name: "Pontianak Utara",
+        rt: 573,
+        rw: 135,
+        penduduk: 128456,
+        center: [0.0050, 109.3350],
+        points: [
+          { name: "Kelurahan Siantan Hilir", lat: 0.0030, lng: 109.3320, rt: 122, rw: 29, penduduk: 27840 },
+          { name: "Kelurahan Siantan Hulu", lat: 0.0070, lng: 109.3380, rt: 118, rw: 28, penduduk: 26320 },
+          { name: "Kelurahan Siantan Tengah", lat: 0.0050, lng: 109.3400, rt: 110, rw: 26, penduduk: 24560 },
+          { name: "Kelurahan Batulayang", lat: 0.0090, lng: 109.3340, rt: 115, rw: 27, penduduk: 25840 },
+          { name: "Kelurahan Batu Layang", lat: 0.0020, lng: 109.3280, rt: 108, rw: 25, penduduk: 23896 }
+        ]
+      }
+    ];
 
-</div>
+    // ================= CALCULATE TOTALS =================
+    const totals = dataPontianak.reduce((acc, d) => ({
+      penduduk: acc.penduduk + d.penduduk,
+      rw: acc.rw + d.rw,
+      rt: acc.rt + d.rt,
+      points: acc.points + d.points.length
+    }), { penduduk: 0, rw: 0, rt: 0, points: 0 });
 
-<!-- FOOTER -->
-<footer class="glass rounded-2xl p-8 mt-8">
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
-    
-    <!-- Info Kontak -->
-    <div>
-      <h4 class="text-emerald-400 font-bold text-lg mb-4 flex items-center gap-2">
-        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-          <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
-          <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
-        </svg>
-        Kontak Kami
-      </h4>
-      <div class="text-slate-300 text-sm space-y-2">
-        <p class="flex items-start gap-2">
-          <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
-          </svg>
-          <span>Jl. Rahadi Usman No.1, Pontianak, Kalimantan Barat 78117</span>
-        </p>
-        <p class="flex items-center gap-2">
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
-          </svg>
-          <span>(0561) 736711</span>
-        </p>
-        <p class="flex items-center gap-2">
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
-            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
-          </svg>
-          <span>diskominfo@pontianakkota.go.id</span>
-        </p>
-      </div>
-    </div>
+    document.getElementById('total-penduduk').textContent = totals.penduduk.toLocaleString('id-ID');
+    document.getElementById('total-rw').textContent = totals.rw.toLocaleString('id-ID');
+    document.getElementById('total-rt').textContent = totals.rt.toLocaleString('id-ID');
+    document.getElementById('total-markers').textContent = totals.points;
 
-    <!-- Tentang -->
-    <div>
-      <h4 class="text-emerald-400 font-bold text-lg mb-4 flex items-center gap-2">
-        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
-        </svg>
-        Tentang Portal
-      </h4>
-      <div class="text-slate-300 text-sm space-y-2">
-        <p>Portal Data Statistik Sektoral Kota Pontianak menyediakan akses informasi kependudukan dan administratif secara terbuka dan terintegrasi.</p>
-        <p class="text-xs text-slate-400 mt-3">
-          <span class="font-semibold text-emerald-400">Sumber Data:</span><br>
-          Dinas Kependudukan dan Pencatatan Sipil Kota Pontianak
-        </p>
-        <p class="text-xs text-slate-400">
-          <span class="font-semibold text-emerald-400">Terakhir Diperbarui:</span> Januari 2025
-        </p>
-      </div>
-    </div>
+    // ================= DAFTAR KECAMATAN =================
+    const rankList = document.getElementById("rank-list");
+    dataPontianak.forEach((d, i) => {
+      rankList.innerHTML += `
+        <div class="flex justify-between items-center border-b border-slate-700 pb-2 hover:bg-slate-800/50 px-2 py-2 rounded cursor-pointer transition-all" onclick="focusOnDistrict('${d.name}')">
+          <span class="flex-1 px-2 text-sm">${d.name}</span>
+          <span class="font-bold text-emerald-400 text-xs">${d.rt} RT</span>
+        </div>`;
+    });
 
-    <!-- Link Terkait -->
-    <div>
-      <h4 class="text-emerald-400 font-bold text-lg mb-4 flex items-center gap-2">
-        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5a2 2 0 11-2.828-2.828l3-3z" clip-rule="evenodd"/>
-        </svg>
-        Link Terkait
-      </h4>
-      <div class="text-slate-300 text-sm space-y-2">
-        <a href="https://pontianakkota.go.id" target="_blank" class="block hover:text-emerald-400 transition-colors">
-          → Portal Resmi Pemkot Pontianak
-        </a>
-        <a href="https://diskominfo.pontianakkota.go.id" target="_blank" class="block hover:text-emerald-400 transition-colors">
-          → Website Diskominfo Pontianak
-        </a>
-        <a href="https://data.pontianakkota.go.id" target="_blank" class="block hover:text-emerald-400 transition-colors">
-          → Portal Data Kota Pontianak
-        </a>
-        <a href="https://satudata.pontianakkota.go.id" target="_blank" class="block hover:text-emerald-400 transition-colors">
-          → Satu Data Indonesia Pontianak
-        </a>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Copyright -->
-  <div class="border-t border-slate-700 pt-6 mt-6">
-    <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-400">
-      <p class="flex items-center gap-2">
-        © 2025 <span class="font-semibold text-white">Dinas Komunikasi dan Informatika Kota Pontianak</span>
-      </p>
-      <p class="text-xs">
-        Didukung oleh <span class="text-emerald-400 font-semibold">Satu Data Indonesia</span>
-      </p>
-    </div>
-  </div>
-</footer>
-
-</div>
-
-<script>
-// ================= DATA RESMI KOTA PONTIANAK =================
-const dataPontianak = [
-  {
-    name: "Pontianak Barat",
-    rt: 561,
-    rw: 105,
-    penduduk: 156782,
-    center: [-0.0347, 109.3113],
-    points: [
-      { name: "Kelurahan Sungai Jawi Dalam", lat: -0.0280, lng: 109.3050 },
-      { name: "Kelurahan Sungai Jawi Luar", lat: -0.0320, lng: 109.3100 },
-      { name: "Kelurahan Sungai Belitung Darat", lat: -0.0380, lng: 109.3080 },
-      { name: "Kelurahan Sungai Belitung Laut", lat: -0.0420, lng: 109.3140 },
-      { name: "Kelurahan Pal Lima", lat: -0.0360, lng: 109.3180 }
-    ]
-  },
-  {
-    name: "Pontianak Kota",
-    rt: 520,
-    rw: 121,
-    penduduk: 32580,
-    center: [-0.0263, 109.3425],
-    points: [
-      { name: "Kelurahan Tengah", lat: -0.0240, lng: 109.3400 },
-      { name: "Kelurahan Darat Sekip", lat: -0.0270, lng: 109.3450 },
-      { name: "Kelurahan Sungai Bangkong", lat: -0.0290, lng: 109.3380 },
-      { name: "Kelurahan Mariana", lat: -0.0250, lng: 109.3480 }
-    ]
-  },
-  {
-    name: "Pontianak Selatan",
-    rt: 413,
-    rw: 92,
-    penduduk: 68234,
-    center: [-0.0500, 109.3350],
-    points: [
-      { name: "Kelurahan Akcaya", lat: -0.0480, lng: 109.3320 },
-      { name: "Kelurahan Bangka Belitung Darat", lat: -0.0520, lng: 109.3380 },
-      { name: "Kelurahan Bangka Belitung Laut", lat: -0.0540, lng: 109.3420 },
-      { name: "Kelurahan Parit Tokaya", lat: -0.0460, lng: 109.3280 }
-    ]
-  },
-  {
-    name: "Pontianak Tenggara",
-    rt: 190,
-    rw: 47,
-    penduduk: 180288,
-    center: [-0.0100, 109.3650],
-    points: [
-      { name: "Kelurahan Bansir Laut", lat: -0.0080, lng: 109.3620 },
-      { name: "Kelurahan Bansir Darat", lat: -0.0120, lng: 109.3680 },
-      { name: "Kelurahan Parit Mayor", lat: -0.0140, lng: 109.3640 }
-    ]
-  },
-  {
-    name: "Pontianak Timur",
-    rt: 421,
-    rw: 86,
-    penduduk: 92345,
-    center: [-0.0150, 109.3550],
-    points: [
-      { name: "Kelurahan Saigon", lat: -0.0130, lng: 109.3520 },
-      { name: "Kelurahan Tanjung Hilir", lat: -0.0170, lng: 109.3580 },
-      { name: "Kelurahan Tanjung Hulu", lat: -0.0180, lng: 109.3600 },
-      { name: "Kelurahan Banjar Serasan", lat: -0.0120, lng: 109.3490 }
-    ]
-  },
-  {
-    name: "Pontianak Utara",
-    rt: 573,
-    rw: 135,
-    penduduk: 128456,
-    center: [0.0050, 109.3350],
-    points: [
-      { name: "Kelurahan Siantan Hilir", lat: 0.0030, lng: 109.3320 },
-      { name: "Kelurahan Siantan Hulu", lat: 0.0070, lng: 109.3380 },
-      { name: "Kelurahan Siantan Tengah", lat: 0.0050, lng: 109.3400 },
-      { name: "Kelurahan Batulayang", lat: 0.0090, lng: 109.3340 },
-      { name: "Kelurahan Batu Layang", lat: 0.0020, lng: 109.3280 }
-    ]
-  }
-];
-
-// ================= CALCULATE TOTALS =================
-const totals = dataPontianak.reduce((acc, d) => ({
-  penduduk: acc.penduduk + d.penduduk,
-  rw: acc.rw + d.rw,
-  rt: acc.rt + d.rt,
-  points: acc.points + d.points.length
-}), { penduduk: 0, rw: 0, rt: 0, points: 0 });
-
-document.getElementById('total-penduduk').textContent = totals.penduduk.toLocaleString('id-ID');
-document.getElementById('total-rw').textContent = totals.rw.toLocaleString('id-ID');
-document.getElementById('total-rt').textContent = totals.rt.toLocaleString('id-ID');
-document.getElementById('total-markers').textContent = totals.points;
-
-// ================= DAFTAR KECAMATAN =================
-const rankList = document.getElementById("rank-list");
-dataPontianak.forEach((d,i)=>{
-  rankList.innerHTML += `
-    <div class="flex justify-between items-center border-b border-slate-700 pb-2 hover:bg-slate-800/50 px-2 py-2 rounded cursor-pointer transition-all" onclick="focusOnDistrict('${d.name}')">
-      <span class="flex-1 px-2 text-sm">${d.name}</span>
-      <span class="font-bold text-emerald-400 text-xs">${d.rt} RT</span>
-    </div>`;
-});
-
-// ================= MAP INITIALIZATION =================
-const map = L.map("map").setView([-0.02,109.34],12);
-
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  attribution: "&copy; OpenStreetMap contributors",
-  maxZoom: 19
-}).addTo(map);
-
-// ================= COLOR SCALE =================
-function getColor(rt){
-  return rt > 570 ? "#064e3b" :
-         rt > 550 ? "#065f46" :
-         rt >= 500 ? "#059669" :
-         rt >= 400 ? "#10b981" :
-         "#34d399";
-}
-
-// ================= MARKER CLUSTER GROUP =================
-let markerClusters = {};
-let currentGeoJsonLayer = null;
-
-// ================= CREATE CUSTOM MARKER =================
-function createCustomMarker(point, districtName, districtData) {
-  const isLarge = districtData.rt > 500;
-  const icon = L.divIcon({
-    className: 'custom-div-icon',
-    html: `<div class="custom-marker ${isLarge ? 'custom-marker-large' : ''} pulse-animation">
+    // ================= CUSTOM MARKER =================
+    function createCustomMarker(point, districtName, districtData) {
+      const isLarge = point.rt > 100;
+      const icon = L.divIcon({
+        className: 'custom-div-icon',
+        html: `<div class="custom-marker ${isLarge ? 'custom-marker-large' : ''} pulse-animation">
              <svg class="w-4 h-4" fill="white" viewBox="0 0 20 20">
                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
              </svg>
            </div>`,
-    iconSize: [isLarge ? 44 : 36, isLarge ? 44 : 36],
-    iconAnchor: [isLarge ? 22 : 18, isLarge ? 44 : 36]
-  });
-
-  const marker = L.marker([point.lat, point.lng], { icon });
-  
-  marker.bindPopup(`
-    <div class="info-card" style="min-width: 220px;">
-      <h4>${point.name}</h4>
-      <p>Kecamatan: <b>${districtName}</b></p>
-      <p>Total RT: <b>${districtData.rt}</b></p>
-      <p>Total RW: <b>${districtData.rw}</b></p>
-      <p>Penduduk: <b>${districtData.penduduk.toLocaleString('id-ID')}</b></p>
-    </div>
-  `, { maxWidth: 300 });
-
-  return marker;
-}
-
-// ================= LOAD GEOJSON =================
-fetch("https://raw.githubusercontent.com/anshori/geojson-indonesia/master/kecamatan/6171.json")
-.then(r=>r.json())
-.then(geo=>{
-  currentGeoJsonLayer = L.geoJson(geo,{
-    style: f => {
-      const d = dataPontianak.find(
-        x => x.name.toUpperCase() === f.properties.name.toUpperCase()
-      );
-      return {
-        fillColor: d ? getColor(d.rt) : "#e5e7eb",
-        weight: 2,
-        color: "#1e293b",
-        fillOpacity: 0.7
-      };
-    },
-    onEachFeature: (f, l) => {
-      const d = dataPontianak.find(
-        x => x.name.toUpperCase() === f.properties.name.toUpperCase()
-      );
-
-      if (!d) return;
-
-      // Popup untuk polygon
-      l.bindPopup(`
-        <div class="info-card">
-          <h4>${f.properties.name}</h4>
-          <p>Penduduk: <b>${d.penduduk.toLocaleString("id-ID")}</b></p>
-          <p>Jumlah RW: <b>${d.rw}</b></p>
-          <p>Jumlah RT: <b>${d.rt}</b></p>
-          <p style="margin-top: 12px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,.3); font-size: 12px; color: rgba(255,255,255,.8);">
-            <svg class="w-4 h-4 inline" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
-              <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
-            </svg>
-            Klik wilayah untuk melihat titik lokasi
-          </p>
-        </div>
-      `);
-
-      // Hover effect
-      l.on({
-        mouseover: e => {
-          e.target.setStyle({
-            weight: 4,
-            color: "#ffffff",
-            fillOpacity: 0.9
-          });
-        },
-        mouseout: e => {
-          currentGeoJsonLayer.resetStyle(e.target);
-        },
-        click: e => {
-          showDistrictMarkers(d, f.properties.name);
-          map.fitBounds(e.target.getBounds(), { padding: [50, 50] });
-        }
+        iconSize: [isLarge ? 44 : 36, isLarge ? 44 : 36],
+        iconAnchor: [isLarge ? 22 : 18, isLarge ? 44 : 36]
       });
+
+      const marker = L.marker([point.lat, point.lng], { icon });
+
+      marker.bindPopup(`
+        <div class="info-card" style="min-width: 220px;">
+          <h4>${point.name}</h4>
+          <p>Kecamatan: <b>${districtName}</b></p>
+          <p>Total RT: <b>${point.rt}</b></p>
+          <p>Total RW: <b>${point.rw}</b></p>
+          <p>Penduduk: <b>${point.penduduk.toLocaleString('id-ID')}</b></p>
+        </div>
+      `, { maxWidth: 300 });
+
+      return marker;
     }
-  }).addTo(map);
 
-  map.fitBounds(currentGeoJsonLayer.getBounds(), { padding: [20, 20] });
-});
+    // ================= MAP INITIALIZATION =================
+    const map = L.map("map").setView([-0.02, 109.34], 12);
 
-// ================= SHOW DISTRICT MARKERS =================
-function showDistrictMarkers(districtData, districtName) {
-  // Remove all existing markers
-  Object.values(markerClusters).forEach(cluster => map.removeLayer(cluster));
-  markerClusters = {};
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "&copy; OpenStreetMap contributors",
+      maxZoom: 19
+    }).addTo(map);
 
-  // Create new cluster for this district
-  const cluster = L.markerClusterGroup({
-    spiderfyOnMaxZoom: true,
-    showCoverageOnHover: true,
-    zoomToBoundsOnClick: true,
-    maxClusterRadius: 60
-  });
+    // ================= COLOR SCALE =================
+    function getColor(rt) {
+      return rt > 570 ? "#064e3b" :
+        rt > 550 ? "#065f46" :
+          rt >= 500 ? "#059669" :
+            rt >= 400 ? "#10b981" :
+              "#34d399";
+    }
 
-  districtData.points.forEach(point => {
-    const marker = createCustomMarker(point, districtName, districtData);
-    cluster.addLayer(marker);
-  });
+    // ================= MARKER CLUSTER GROUP =================
+    let markerClusters = {};
+    let currentGeoJsonLayer = null;
 
-  markerClusters[districtName] = cluster;
-  map.addLayer(cluster);
+    // ================= LOAD GEOJSON =================
+    fetch("https://raw.githubusercontent.com/anshori/geojson-indonesia/master/kecamatan/6171.json")
+      .then(r => r.json())
+      .then(geo => {
+        currentGeoJsonLayer = L.geoJson(geo, {
+          style: f => {
+            const d = dataPontianak.find(
+              x => x.name.toUpperCase() === f.properties.name.toUpperCase()
+            );
+            return {
+              fillColor: d ? getColor(d.rt) : "#e5e7eb",
+              weight: 2,
+              color: "#1e293b",
+              fillOpacity: 0.7
+            };
+          },
+          onEachFeature: (f, l) => {
+            const d = dataPontianak.find(
+              x => x.name.toUpperCase() === f.properties.name.toUpperCase()
+            );
 
-  // Show notification
-  const notification = L.control({ position: 'topright' });
-  notification.onAdd = function() {
-    const div = L.DomUtil.create('div', 'glass');
-    div.style.padding = '12px 20px';
-    div.style.borderRadius = '8px';
-    div.innerHTML = `
-      <div style="color: #10b981; font-weight: 700; font-size: 14px;">
-        ✓ ${districtData.points.length} titik lokasi ditampilkan
-      </div>
-      <div style="color: #94a3b8; font-size: 12px; margin-top: 4px;">
-        ${districtName}
-      </div>
-    `;
-    setTimeout(() => map.removeControl(notification), 3000);
-    return div;
-  };
-  notification.addTo(map);
-}
+            if (!d) return;
 
-// ================= FOCUS ON DISTRICT =================
-function focusOnDistrict(districtName) {
-  const district = dataPontianak.find(d => d.name === districtName);
-  if (!district) return;
+            l.bindPopup(`
+              <div class="info-card">
+                <h4>${f.properties.name}</h4>
+                <p>Penduduk: <b>${d.penduduk.toLocaleString("id-ID")}</b></p>
+                <p>Jumlah RW: <b>${d.rw}</b></p>
+                <p>Jumlah RT: <b>${d.rt}</b></p>
+                <p style="margin-top: 12px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,.3); font-size: 12px; color: rgba(255,255,255,.8);">
+                  Klik wilayah untuk melihat titik lokasi
+                </p>
+              </div>
+            `);
 
-  map.setView(district.center, 14);
-  showDistrictMarkers(district, districtName);
-}
+            l.on({
+              mouseover: e => {
+                e.target.setStyle({
+                  weight: 4,
+                  color: "#ffffff",
+                  fillOpacity: 0.9
+                });
+              },
+              mouseout: e => {
+                currentGeoJsonLayer.resetStyle(e.target);
+              },
+              click: e => {
+                showDistrictMarkers(d, f.properties.name);
+                map.fitBounds(e.target.getBounds(), { padding: [50, 50] });
+              }
+            });
+          }
+        }).addTo(map);
 
-// ================= MOBILE OPTIMIZATION =================
-if (window.innerWidth < 768) {
-  map.zoomControl.setPosition('bottomleft');
-}
-</script>
+        map.fitBounds(currentGeoJsonLayer.getBounds(), { padding: [20, 20] });
+      });
+
+    // ================= SHOW DISTRICT MARKERS =================
+    function showDistrictMarkers(districtData, districtName) {
+      Object.values(markerClusters).forEach(cluster => map.removeLayer(cluster));
+      markerClusters = {};
+
+      const cluster = L.markerClusterGroup({
+        spiderfyOnMaxZoom: true,
+        showCoverageOnHover: true,
+        zoomToBoundsOnClick: true,
+        maxClusterRadius: 60
+      });
+
+      districtData.points.forEach(point => {
+        const marker = createCustomMarker(point, districtName, districtData);
+        cluster.addLayer(marker);
+      });
+
+      markerClusters[districtName] = cluster;
+      map.addLayer(cluster);
+
+      const notification = L.control({ position: 'topright' });
+      notification.onAdd = function () {
+        const div = L.DomUtil.create('div', 'glass');
+        div.style.padding = '12px 20px';
+        div.style.borderRadius = '8px';
+        div.innerHTML = `
+          <div style="color: #10b981; font-weight: 700; font-size: 14px;">
+            ✓ ${districtData.points.length} titik lokasi ditampilkan
+          </div>
+          <div style="color: #94a3b8; font-size: 12px; margin-top: 4px;">
+            ${districtName}
+          </div>
+        `;
+        setTimeout(() => map.removeControl(notification), 3000);
+        return div;
+      };
+      notification.addTo(map);
+    }
+
+    // ================= FOCUS ON DISTRICT =================
+    function focusOnDistrict(districtName) {
+      const district = dataPontianak.find(d => d.name === districtName);
+      if (!district) return;
+
+      map.setView(district.center, 14);
+      showDistrictMarkers(district, districtName);
+    }
+
+    // ================= MOBILE ZOOM CONTROL POSITION =================
+    if (window.innerWidth < 768) {
+      map.zoomControl.setPosition('bottomleft');
+
+    }
+    window.focusOnDistrict = function (districtName) {
+      const district = dataPontianak.find(d => d.name === districtName);
+      if (!district) return;
+
+      map.setView(district.center, 14);
+      showDistrictMarkers(district, districtName);
+
+      // Smooth scroll ke peta
+      document.getElementById('map-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
+    // Mobile zoom control
+    if (window.innerWidth < 768) {
+      map.zoomControl.setPosition('bottomleft');
+    }
+  </script>
+
 
 </body>
+
 </html>
