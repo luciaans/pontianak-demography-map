@@ -20,7 +20,6 @@ header img {
     filter: drop-shadow(0 2px 6px rgba(0, 0, 0, .4));
 }
 
-/* Custom Marker Styles */
 .custom-marker {
     background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     border: 3px solid white;
@@ -43,7 +42,6 @@ header img {
     background: linear-gradient(135deg, #059669 0%, #047857 100%);
 }
 
-/* Marker Cluster Styles */
 .marker-cluster {
     background: rgba(16, 185, 129, 0.6);
     border: 3px solid rgba(5, 150, 105, 0.8);
@@ -55,7 +53,6 @@ header img {
     font-weight: 700;
 }
 
-/* Animation */
 @keyframes pulse {
 
     0%,
@@ -72,7 +69,6 @@ header img {
     animation: pulse 2s infinite;
 }
 
-/* Info Card */
 .info-card {
     background: linear-gradient(135deg, rgba(5, 150, 105, 0.95) 0%, rgba(4, 120, 87, 0.95) 100%);
     border-radius: 12px;
@@ -101,7 +97,6 @@ header img {
     margin-left: 8px;
 }
 
-/* Stats Badge */
 .stats-badge {
     background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     padding: 8px 16px;
@@ -111,7 +106,6 @@ header img {
     box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
-/* Footer Links */
 .footer-link {
     color: #cbd5e1;
     transition: all 0.3s ease;
@@ -125,7 +119,6 @@ header img {
     transform: translateX(4px);
 }
 
-/* News Card Styles */
 .line-clamp-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -142,13 +135,11 @@ header img {
     border-bottom: none;
 }
 
-/* ================= MOBILE OPTIMIZATIONS ================= */
 @media (max-width: 768px) {
     body {
         padding: 1rem;
     }
 
-    /* Header lebih ringkas */
     header {
         flex-direction: column;
         text-align: center;
@@ -173,19 +164,16 @@ header img {
         padding: 6px 12px;
     }
 
-    /* Map lebih proporsional */
     #map {
         height: 55vh;
         min-height: 380px;
         border-radius: 12px;
     }
 
-    /* Grid menjadi 1 kolom, sidebar di atas */
     .grid-cols-1.lg\:grid-cols-4 {
         grid-template-columns: 1fr;
     }
 
-    /* Sidebar lebih kompak */
     aside .glass {
         padding: 1rem;
         border-radius: 14px;
@@ -211,7 +199,6 @@ header img {
         font-size: 0.8rem !important;
     }
 
-    /* Statistics panel lebih kecil */
     #total-penduduk,
     #total-rw,
     #total-rt {
@@ -222,13 +209,11 @@ header img {
         font-size: 0.7rem;
     }
 
-    /* About section lebih ringkas */
     .glass p {
         font-size: 0.875rem;
         line-height: 1.5;
     }
 
-    /* Footer lebih sederhana */
     footer .grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
@@ -247,7 +232,6 @@ header img {
         font-size: 0.875rem;
     }
 
-    /* Copyright */
     footer .flex {
         flex-direction: column;
         text-align: center;
@@ -255,7 +239,6 @@ header img {
         font-size: 0.75rem;
     }
 
-    /* Touch target lebih besar untuk daftar kecamatan */
     #rank-list>div {
         min-height: 44px;
     }

@@ -1,68 +1,3 @@
-// ================= FETCH BERITA INDONESIA =================
-async function loadNews() {
-  const newsContainer = document.getElementById('news-container');
-
-  try {
-    const rssResponse = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://www.antaranews.com/rss/terkini');
-    const rssData = await rssResponse.json();
-
-    if (rssData.items && rssData.items.length > 0) {
-      // Ubah dari slice(0, 5) menjadi slice(0, 2) untuk menampilkan 2 berita saja
-      newsContainer.innerHTML = rssData.items.slice(0, 2).map(item => {
-        const imgMatch = item.description?.match(/<img[^>]+src="([^">]+)"/);
-        const imgSrc = imgMatch ? imgMatch[1] : null;
-
-        return `
-          <a href="${item.link}" target="_blank" rel="noopener noreferrer" 
-             class="block hover:bg-slate-800/50 p-3 rounded-lg transition-all group">
-            <div class="flex gap-3">
-              ${imgSrc ? `
-                <img src="${imgSrc}" 
-                     alt="${item.title}"
-                     class="w-20 h-20 object-cover rounded-lg flex-shrink-0"
-                     onerror="this.style.display='none'">
-              ` : ''}
-              <div class="flex-1 min-w-0">
-                <h5 class="text-sm font-semibold text-white group-hover:text-emerald-400 transition-colors line-clamp-2 mb-1">
-                  ${item.title}
-                </h5>
-                <p class="text-xs text-slate-400">
-                  ${new Date(item.pubDate).toLocaleDateString('id-ID', {
-              day: 'numeric',
-              month: 'short',
-              year: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit'
-            })}
-                </p>
-              </div>
-            </div>
-          </a>
-        `;
-      }).join('');
-    } else {
-      throw new Error('RSS gagal');
-    }
-  } catch (rssError) {
-    newsContainer.innerHTML = `
-      <div class="text-center text-slate-400 text-xs py-4">
-        <p>Tidak dapat memuat berita</p>
-        <p class="text-xs mt-2">Coba muat ulang halaman</p>
-      </div>
-    `;
-  }
-}
-
-// Load berita pertama kali saat halaman dibuka
-loadNews();
-
-// AUTO-REFRESH BERITA SETIAP 10 DETIK
-setInterval(() => {
-  loadNews();
-  console.log('Berita di-refresh:', new Date().toLocaleTimeString('id-ID'));
-}, 10000); // 10 detik = 10000 ms
-
-// ================= DATA RESMI KOTA PONTIANAK =================
 const dataPontianak = [
   {
     name: "Pontianak Barat",
@@ -149,7 +84,6 @@ const dataPontianak = [
   }
 ];
 
-// ================= CALCULATE TOTALS =================
 const totals = dataPontianak.reduce((acc, d) => ({
   penduduk: acc.penduduk + d.penduduk,
   rw: acc.rw + d.rw,
@@ -162,7 +96,6 @@ document.getElementById('total-rw').textContent = totals.rw.toLocaleString('id-I
 document.getElementById('total-rt').textContent = totals.rt.toLocaleString('id-ID');
 document.getElementById('total-markers').textContent = totals.points;
 
-// ================= DAFTAR KECAMATAN =================
 const rankList = document.getElementById("rank-list");
 dataPontianak.forEach((d, i) => {
   rankList.innerHTML += `
@@ -172,7 +105,6 @@ dataPontianak.forEach((d, i) => {
     </div>`;
 });
 
-// ================= CUSTOM MARKER =================
 function createCustomMarker(point, districtName, districtData) {
   const isLarge = point.rt > 100;
   const icon = L.divIcon({
@@ -201,7 +133,6 @@ function createCustomMarker(point, districtName, districtData) {
   return marker;
 }
 
-// ================= MAP INITIALIZATION =================
 const map = L.map("map").setView([-0.02, 109.34], 12);
 
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -209,7 +140,6 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 19
 }).addTo(map);
 
-// ================= COLOR SCALE =================
 function getColor(rt) {
   return rt > 570 ? "#064e3b" :
     rt > 550 ? "#065f46" :
@@ -218,11 +148,9 @@ function getColor(rt) {
           "#34d399";
 }
 
-// ================= MARKER CLUSTER GROUP =================
 let markerClusters = {};
 let currentGeoJsonLayer = null;
 
-// ================= LOAD GEOJSON =================
 fetch("https://raw.githubusercontent.com/anshori/geojson-indonesia/master/kecamatan/6171.json")
   .then(r => r.json())
   .then(geo => {
@@ -279,7 +207,6 @@ fetch("https://raw.githubusercontent.com/anshori/geojson-indonesia/master/kecama
     map.fitBounds(currentGeoJsonLayer.getBounds(), { padding: [20, 20] });
   });
 
-// ================= SHOW DISTRICT MARKERS =================
 function showDistrictMarkers(districtData, districtName) {
   Object.values(markerClusters).forEach(cluster => map.removeLayer(cluster));
   markerClusters = {};
@@ -318,7 +245,6 @@ function showDistrictMarkers(districtData, districtName) {
   notification.addTo(map);
 }
 
-// ================= FOCUS ON DISTRICT =================
 function focusOnDistrict(districtName) {
   const district = dataPontianak.find(d => d.name === districtName);
   if (!district) return;
@@ -327,7 +253,6 @@ function focusOnDistrict(districtName) {
   showDistrictMarkers(district, districtName);
 }
 
-// ================= MOBILE ZOOM CONTROL POSITION =================
 if (window.innerWidth < 768) {
   map.zoomControl.setPosition('bottomleft');
 }
@@ -339,11 +264,69 @@ window.focusOnDistrict = function (districtName) {
   map.setView(district.center, 14);
   showDistrictMarkers(district, districtName);
 
-  // Smooth scroll ke peta
   document.getElementById('map').scrollIntoView({ behavior: 'smooth', block: 'start' });
 };
 
-// Mobile zoom control
 if (window.innerWidth < 768) {
   map.zoomControl.setPosition('bottomleft');
 }
+
+async function loadNews() {
+  const newsContainer = document.getElementById('news-container');
+
+  try {
+    const rssResponse = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://www.antaranews.com/rss/terkini');
+    const rssData = await rssResponse.json();
+
+    if (rssData.items && rssData.items.length > 0) {
+      newsContainer.innerHTML = rssData.items.slice(0, 2).map(item => {
+        const imgMatch = item.description?.match(/<img[^>]+src="([^">]+)"/);
+        const imgSrc = imgMatch ? imgMatch[1] : null;
+
+        return `
+          <a href="${item.link}" target="_blank" rel="noopener noreferrer" 
+             class="block hover:bg-slate-800/50 p-3 rounded-lg transition-all group">
+            <div class="flex gap-3">
+              ${imgSrc ? `
+                <img src="${imgSrc}" 
+                     alt="${item.title}"
+                     class="w-20 h-20 object-cover rounded-lg flex-shrink-0"
+                     onerror="this.style.display='none'">
+              ` : ''}
+              <div class="flex-1 min-w-0">
+                <h5 class="text-sm font-semibold text-white group-hover:text-emerald-400 transition-colors line-clamp-2 mb-1">
+                  ${item.title}
+                </h5>
+                <p class="text-xs text-slate-400">
+                  ${new Date(item.pubDate).toLocaleDateString('id-ID', {
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+            })}
+                </p>
+              </div>
+            </div>
+          </a>
+        `;
+      }).join('');
+    } else {
+      throw new Error('RSS gagal');
+    }
+  } catch (rssError) {
+    newsContainer.innerHTML = `
+      <div class="text-center text-slate-400 text-xs py-4">
+        <p>Tidak dapat memuat berita</p>
+        <p class="text-xs mt-2">Coba muat ulang halaman</p>
+      </div>
+    `;
+  }
+}
+
+loadNews();
+
+setInterval(() => {
+  loadNews();
+  console.log('Berita di-refresh:', new Date().toLocaleTimeString('id-ID'));
+}, 10000); 
