@@ -1,0 +1,349 @@
+// ================= FETCH BERITA INDONESIA =================
+async function loadNews() {
+  const newsContainer = document.getElementById('news-container');
+
+  try {
+    const rssResponse = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://www.antaranews.com/rss/terkini');
+    const rssData = await rssResponse.json();
+
+    if (rssData.items && rssData.items.length > 0) {
+      // Ubah dari slice(0, 5) menjadi slice(0, 2) untuk menampilkan 2 berita saja
+      newsContainer.innerHTML = rssData.items.slice(0, 2).map(item => {
+        const imgMatch = item.description?.match(/<img[^>]+src="([^">]+)"/);
+        const imgSrc = imgMatch ? imgMatch[1] : null;
+
+        return `
+          <a href="${item.link}" target="_blank" rel="noopener noreferrer" 
+             class="block hover:bg-slate-800/50 p-3 rounded-lg transition-all group">
+            <div class="flex gap-3">
+              ${imgSrc ? `
+                <img src="${imgSrc}" 
+                     alt="${item.title}"
+                     class="w-20 h-20 object-cover rounded-lg flex-shrink-0"
+                     onerror="this.style.display='none'">
+              ` : ''}
+              <div class="flex-1 min-w-0">
+                <h5 class="text-sm font-semibold text-white group-hover:text-emerald-400 transition-colors line-clamp-2 mb-1">
+                  ${item.title}
+                </h5>
+                <p class="text-xs text-slate-400">
+                  ${new Date(item.pubDate).toLocaleDateString('id-ID', {
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+            })}
+                </p>
+              </div>
+            </div>
+          </a>
+        `;
+      }).join('');
+    } else {
+      throw new Error('RSS gagal');
+    }
+  } catch (rssError) {
+    newsContainer.innerHTML = `
+      <div class="text-center text-slate-400 text-xs py-4">
+        <p>Tidak dapat memuat berita</p>
+        <p class="text-xs mt-2">Coba muat ulang halaman</p>
+      </div>
+    `;
+  }
+}
+
+// Load berita pertama kali saat halaman dibuka
+loadNews();
+
+// AUTO-REFRESH BERITA SETIAP 10 DETIK
+setInterval(() => {
+  loadNews();
+  console.log('Berita di-refresh:', new Date().toLocaleTimeString('id-ID'));
+}, 10000); // 10 detik = 10000 ms
+
+// ================= DATA RESMI KOTA PONTIANAK =================
+const dataPontianak = [
+  {
+    name: "Pontianak Barat",
+    rt: 561,
+    rw: 105,
+    penduduk: 156782,
+    center: [-0.0347, 109.3113],
+    points: [
+      { name: "Kelurahan Pal Lima", lat: -0.0360, lng: 109.3180, rt: 118, rw: 22, penduduk: 34130 },
+      { name: "Kelurahan Sungai Beliung", lat: -0.0380, lng: 109.3080, rt: 102, rw: 19, penduduk: 28620 },
+      { name: "Kelurahan Sungai Jawi Dalam", lat: -0.0280, lng: 109.3050, rt: 125, rw: 24, penduduk: 35240 },
+      { name: "Kelurahan Sungai Jawi Luar", lat: -0.0320, lng: 109.3100, rt: 118, rw: 22, penduduk: 31450 }
+    ]
+  },
+  {
+    name: "Pontianak Kota",
+    rt: 620,
+    rw: 145,
+    penduduk: 33500,
+    center: [-0.0263, 109.3425],
+    points: [
+      { name: "Kelurahan Darat Sekip", lat: -0.0270, lng: 109.3450, rt: 135, rw: 31, penduduk: 8420 },
+      { name: "Kelurahan Mariana", lat: -0.0250, lng: 109.3480, rt: 115, rw: 29, penduduk: 7360 },
+      { name: "Kelurahan Sungai Bangkong", lat: -0.0290, lng: 109.3380, rt: 128, rw: 29, penduduk: 7835 },
+      { name: "Kelurahan Sungai Jawi", lat: -0.0260, lng: 109.3370, rt: 100, rw: 24, penduduk: 6500 },
+      { name: "Kelurahan Tengah", lat: -0.0240, lng: 109.3400, rt: 142, rw: 32, penduduk: 8965 }
+    ]
+  },
+  {
+    name: "Pontianak Selatan",
+    rt: 556,
+    rw: 122,
+    penduduk: 69800,
+    center: [-0.0500, 109.3350],
+    points: [
+      { name: "Kelurahan Akcaya", lat: -0.0480, lng: 109.3320, rt: 108, rw: 24, penduduk: 18240 },
+      { name: "Kelurahan Benuamelayu Darat", lat: -0.0510, lng: 109.3300, rt: 85, rw: 19, penduduk: 14250 },
+      { name: "Kelurahan Benuamelayu Laut", lat: -0.0530, lng: 109.3340, rt: 90, rw: 20, penduduk: 15100 },
+      { name: "Kelurahan Kotabaru", lat: -0.0470, lng: 109.3390, rt: 78, rw: 17, penduduk: 12980 },
+      { name: "Kelurahan Parittokaya", lat: -0.0490, lng: 109.3250, rt: 95, rw: 22, penduduk: 15920 }
+    ]
+  },
+  {
+    name: "Pontianak Tenggara",
+    rt: 190,
+    rw: 47,
+    penduduk: 184500,
+    center: [-0.0100, 109.3650],
+    points: [
+      { name: "Kelurahan Bangka Belitung Darat", lat: -0.0095, lng: 109.3600, rt: 48, rw: 12, penduduk: 45000 },
+      { name: "Kelurahan Bangka Belitung Laut", lat: -0.0105, lng: 109.3700, rt: 52, rw: 13, penduduk: 48500 },
+      { name: "Kelurahan Bansir Darat", lat: -0.0120, lng: 109.3680, rt: 45, rw: 11, penduduk: 43394 },
+      { name: "Kelurahan Bansir Laut", lat: -0.0080, lng: 109.3620, rt: 45, rw: 11, penduduk: 43394 }
+    ]
+  },
+  {
+    name: "Pontianak Timur",
+    rt: 421,
+    rw: 86,
+    penduduk: 110627,
+    center: [-0.0150, 109.3550],
+    points: [
+      { name: "Kelurahan Banjar Serasan", lat: -0.0120, lng: 109.3490, rt: 60, rw: 12, penduduk: 13200 },
+      { name: "Kelurahan Dalambugis", lat: -0.0160, lng: 109.3530, rt: 58, rw: 12, penduduk: 12850 },
+      { name: "Kelurahan Paritmayor", lat: -0.0145, lng: 109.3570, rt: 62, rw: 13, penduduk: 13500 },
+      { name: "Kelurahan Saigon", lat: -0.0130, lng: 109.3520, rt: 64, rw: 13, penduduk: 14120 },
+      { name: "Kelurahan Tambelansampit", lat: -0.0155, lng: 109.3600, rt: 55, rw: 11, penduduk: 12100 },
+      { name: "Kelurahan Tanjunghulu", lat: -0.0175, lng: 109.3590, rt: 61, rw: 12, penduduk: 13275 },
+      { name: "Kelurahan Tanjunghlir", lat: -0.0185, lng: 109.3610, rt: 61, rw: 13, penduduk: 13300 }
+    ]
+  },
+  {
+    name: "Pontianak Utara",
+    rt: 573,
+    rw: 135,
+    penduduk: 132000,
+    center: [0.0050, 109.3350],
+    points: [
+      { name: "Kelurahan Batulayang", lat: 0.0090, lng: 109.3340, rt: 143, rw: 34, penduduk: 32114 },
+      { name: "Kelurahan Siantan Hilir", lat: 0.0030, lng: 109.3320, rt: 144, rw: 34, penduduk: 32336 },
+      { name: "Kelurahan Siantan Hulu", lat: 0.0070, lng: 109.3380, rt: 142, rw: 33, penduduk: 31892 },
+      { name: "Kelurahan Siantan Tengah", lat: 0.0050, lng: 109.3350, rt: 144, rw: 34, penduduk: 32114 }
+    ]
+  }
+];
+
+// ================= CALCULATE TOTALS =================
+const totals = dataPontianak.reduce((acc, d) => ({
+  penduduk: acc.penduduk + d.penduduk,
+  rw: acc.rw + d.rw,
+  rt: acc.rt + d.rt,
+  points: acc.points + d.points.length
+}), { penduduk: 0, rw: 0, rt: 0, points: 0 });
+
+document.getElementById('total-penduduk').textContent = totals.penduduk.toLocaleString('id-ID');
+document.getElementById('total-rw').textContent = totals.rw.toLocaleString('id-ID');
+document.getElementById('total-rt').textContent = totals.rt.toLocaleString('id-ID');
+document.getElementById('total-markers').textContent = totals.points;
+
+// ================= DAFTAR KECAMATAN =================
+const rankList = document.getElementById("rank-list");
+dataPontianak.forEach((d, i) => {
+  rankList.innerHTML += `
+    <div class="flex justify-between items-center border-b border-slate-700 pb-2 hover:bg-slate-800/50 px-2 py-2 rounded cursor-pointer transition-all" onclick="focusOnDistrict('${d.name}')">
+      <span class="flex-1 px-2 text-sm">${d.name}</span>
+      <span class="font-bold text-emerald-400 text-xs">${d.rt} RT</span>
+    </div>`;
+});
+
+// ================= CUSTOM MARKER =================
+function createCustomMarker(point, districtName, districtData) {
+  const isLarge = point.rt > 100;
+  const icon = L.divIcon({
+    className: 'custom-div-icon',
+    html: `<div class="custom-marker ${isLarge ? 'custom-marker-large' : ''} pulse-animation">
+         <svg class="w-4 h-4" fill="white" viewBox="0 0 20 20">
+           <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+         </svg>
+       </div>`,
+    iconSize: [isLarge ? 44 : 36, isLarge ? 44 : 36],
+    iconAnchor: [isLarge ? 22 : 18, isLarge ? 44 : 36]
+  });
+
+  const marker = L.marker([point.lat, point.lng], { icon });
+
+  marker.bindPopup(`
+    <div class="info-card" style="min-width: 220px;">
+      <h4>${point.name}</h4>
+      <p>Kecamatan: <b>${districtName}</b></p>
+      <p>Total RT: <b>${point.rt}</b></p>
+      <p>Total RW: <b>${point.rw}</b></p>
+      <p>Penduduk: <b>${point.penduduk.toLocaleString('id-ID')}</b></p>
+    </div>
+  `, { maxWidth: 300 });
+
+  return marker;
+}
+
+// ================= MAP INITIALIZATION =================
+const map = L.map("map").setView([-0.02, 109.34], 12);
+
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution: "&copy; OpenStreetMap contributors",
+  maxZoom: 19
+}).addTo(map);
+
+// ================= COLOR SCALE =================
+function getColor(rt) {
+  return rt > 570 ? "#064e3b" :
+    rt > 550 ? "#065f46" :
+      rt >= 500 ? "#059669" :
+        rt >= 400 ? "#10b981" :
+          "#34d399";
+}
+
+// ================= MARKER CLUSTER GROUP =================
+let markerClusters = {};
+let currentGeoJsonLayer = null;
+
+// ================= LOAD GEOJSON =================
+fetch("https://raw.githubusercontent.com/anshori/geojson-indonesia/master/kecamatan/6171.json")
+  .then(r => r.json())
+  .then(geo => {
+    currentGeoJsonLayer = L.geoJson(geo, {
+      style: f => {
+        const d = dataPontianak.find(
+          x => x.name.toUpperCase() === f.properties.name.toUpperCase()
+        );
+        return {
+          fillColor: d ? getColor(d.rt) : "#e5e7eb",
+          weight: 2,
+          color: "#1e293b",
+          fillOpacity: 0.7
+        };
+      },
+      onEachFeature: (f, l) => {
+        const d = dataPontianak.find(
+          x => x.name.toUpperCase() === f.properties.name.toUpperCase()
+        );
+
+        if (!d) return;
+
+        l.bindPopup(`
+          <div class="info-card">
+            <h4>${f.properties.name}</h4>
+            <p>Penduduk: <b>${d.penduduk.toLocaleString("id-ID")}</b></p>
+            <p>Jumlah RW: <b>${d.rw}</b></p>
+            <p>Jumlah RT: <b>${d.rt}</b></p>
+            <p style="margin-top: 12px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,.3); font-size: 12px; color: rgba(255,255,255,.8);">
+              Klik wilayah untuk melihat titik lokasi
+            </p>
+          </div>
+        `);
+
+        l.on({
+          mouseover: e => {
+            e.target.setStyle({
+              weight: 4,
+              color: "#ffffff",
+              fillOpacity: 0.9
+            });
+          },
+          mouseout: e => {
+            currentGeoJsonLayer.resetStyle(e.target);
+          },
+          click: e => {
+            showDistrictMarkers(d, f.properties.name);
+            map.fitBounds(e.target.getBounds(), { padding: [50, 50] });
+          }
+        });
+      }
+    }).addTo(map);
+
+    map.fitBounds(currentGeoJsonLayer.getBounds(), { padding: [20, 20] });
+  });
+
+// ================= SHOW DISTRICT MARKERS =================
+function showDistrictMarkers(districtData, districtName) {
+  Object.values(markerClusters).forEach(cluster => map.removeLayer(cluster));
+  markerClusters = {};
+
+  const cluster = L.markerClusterGroup({
+    spiderfyOnMaxZoom: true,
+    showCoverageOnHover: true,
+    zoomToBoundsOnClick: true,
+    maxClusterRadius: 60
+  });
+
+  districtData.points.forEach(point => {
+    const marker = createCustomMarker(point, districtName, districtData);
+    cluster.addLayer(marker);
+  });
+
+  markerClusters[districtName] = cluster;
+  map.addLayer(cluster);
+
+  const notification = L.control({ position: 'topright' });
+  notification.onAdd = function () {
+    const div = L.DomUtil.create('div', 'glass');
+    div.style.padding = '12px 20px';
+    div.style.borderRadius = '8px';
+    div.innerHTML = `
+      <div style="color: #10b981; font-weight: 700; font-size: 14px;">
+        ✓ ${districtData.points.length} titik lokasi ditampilkan
+      </div>
+      <div style="color: #94a3b8; font-size: 12px; margin-top: 4px;">
+        ${districtName}
+      </div>
+    `;
+    setTimeout(() => map.removeControl(notification), 3000);
+    return div;
+  };
+  notification.addTo(map);
+}
+
+// ================= FOCUS ON DISTRICT =================
+function focusOnDistrict(districtName) {
+  const district = dataPontianak.find(d => d.name === districtName);
+  if (!district) return;
+
+  map.setView(district.center, 14);
+  showDistrictMarkers(district, districtName);
+}
+
+// ================= MOBILE ZOOM CONTROL POSITION =================
+if (window.innerWidth < 768) {
+  map.zoomControl.setPosition('bottomleft');
+}
+
+window.focusOnDistrict = function (districtName) {
+  const district = dataPontianak.find(d => d.name === districtName);
+  if (!district) return;
+
+  map.setView(district.center, 14);
+  showDistrictMarkers(district, districtName);
+
+  // Smooth scroll ke peta
+  document.getElementById('map').scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
+
+// Mobile zoom control
+if (window.innerWidth < 768) {
+  map.zoomControl.setPosition('bottomleft');
+}
