@@ -4,12 +4,12 @@ const dataPontianak = [
     rt: 561,
     rw: 105,
     penduduk: 156782,
-    center: [-0.0347, 109.3113],
+    center: [-0.0167, 109.2998],
     points: [
-      { name: "Kelurahan Pal Lima", lat: -0.0360, lng: 109.3180, rt: 118, rw: 22, penduduk: 34130 },
-      { name: "Kelurahan Sungai Beliung", lat: -0.0380, lng: 109.3080, rt: 102, rw: 19, penduduk: 28620 },
-      { name: "Kelurahan Sungai Jawi Dalam", lat: -0.0280, lng: 109.3050, rt: 125, rw: 24, penduduk: 35240 },
-      { name: "Kelurahan Sungai Jawi Luar", lat: -0.0320, lng: 109.3100, rt: 118, rw: 22, penduduk: 31450 }
+      { name: "Kelurahan Pal Lima", lat: -0.0288, lng: 109.2930, rt: 118, rw: 22, penduduk: 34130 },
+      { name: "Kelurahan Sungai Beliung", lat: -0.0091, lng: 109.2883, rt: 102, rw: 19, penduduk: 28620 },
+      { name: "Kelurahan Sungai Jawi Dalam", lat: -0.0191, lng: 109.3046, rt: 125, rw: 24, penduduk: 35240 },
+      { name: "Kelurahan Sungai Jawi Luar", lat: -0.0099, lng: 109.3112, rt: 118, rw: 22, penduduk: 31450 }
     ]
   },
   {
