@@ -14,8 +14,8 @@ const dataPontianak = [
   },
   {
     name: "Pontianak Kota",
-    rt: 620,
-    rw: 145,
+    rt: 520,
+    rw: 121,
     penduduk: 33500,
     center: [-0.0263, 109.3425],
     points: [
@@ -28,8 +28,8 @@ const dataPontianak = [
   },
   {
     name: "Pontianak Selatan",
-    rt: 556,
-    rw: 122,
+    rt: 413,
+    rw: 92,
     penduduk: 69800,
     center: [-0.0500, 109.3350],
     points: [
