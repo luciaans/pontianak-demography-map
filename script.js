@@ -233,7 +233,7 @@ function showDistrictMarkers(districtData, districtName) {
     div.style.borderRadius = '8px';
     div.innerHTML = `
       <div style="color: #10b981; font-weight: 700; font-size: 14px;">
-        ✓ ${districtData.points.length} titik lokasi ditampilkan
+         ${districtData.points.length} titik lokasi ditampilkan
       </div>
       <div style="color: #94a3b8; font-size: 12px; margin-top: 4px;">
         ${districtName}
