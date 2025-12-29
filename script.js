@@ -33,11 +33,11 @@ const dataPontianak = [
     penduduk: 69800,
     center: [-0.0500, 109.3350],
     points: [
-      { name: "Kelurahan Akcaya", lat: -0.0480, lng: 109.3320, rt: 108, rw: 24, penduduk: 18240 },
-      { name: "Kelurahan Benuamelayu Darat", lat: -0.0510, lng: 109.3300, rt: 85, rw: 19, penduduk: 14250 },
-      { name: "Kelurahan Benuamelayu Laut", lat: -0.0530, lng: 109.3340, rt: 90, rw: 20, penduduk: 15100 },
-      { name: "Kelurahan Kotabaru", lat: -0.0470, lng: 109.3390, rt: 78, rw: 17, penduduk: 12980 },
-      { name: "Kelurahan Parittokaya", lat: -0.0490, lng: 109.3250, rt: 95, rw: 22, penduduk: 15920 }
+      { name: "Kelurahan Akcaya", lat: -0.0468, lng: 109.3287, rt: 108, rw: 24, penduduk: 18240 },
+      { name: "Kelurahan Benua Melayu Laut", lat: -0.0387, lng: 109.3457, rt: 85, rw: 19, penduduk: 14250 },
+      { name: "Kelurahan Benua Melayu Darat", lat: -0.0347, lng: 109.3390, rt: 90, rw: 20, penduduk: 15100 },
+      { name: "Kelurahan Kota Baru", lat:-0.0618, lng: 109.3113, rt: 78, rw: 17, penduduk: 12980 },
+      { name: "Kelurahan Parit Tokaya", lat:-0.0656, lng: 109.3224, rt: 95, rw: 22, penduduk: 15920 }
     ]
   },
   {
@@ -45,12 +45,12 @@ const dataPontianak = [
     rt: 190,
     rw: 47,
     penduduk: 184500,
-    center: [-0.0100, 109.3650],
+    center: [-0.0670, 109.3483],
     points: [
-      { name: "Kelurahan Bangka Belitung Darat", lat: -0.0095, lng: 109.3600, rt: 48, rw: 12, penduduk: 45000 },
-      { name: "Kelurahan Bangka Belitung Laut", lat: -0.0105, lng: 109.3700, rt: 52, rw: 13, penduduk: 48500 },
-      { name: "Kelurahan Bansir Darat", lat: -0.0120, lng: 109.3680, rt: 45, rw: 11, penduduk: 43394 },
-      { name: "Kelurahan Bansir Laut", lat: -0.0080, lng: 109.3620, rt: 45, rw: 11, penduduk: 43394 }
+      { name: "Kelurahan Bangka Belitung Darat", lat: -0.0805, lng: 109.3509, rt: 48, rw: 12, penduduk: 45000 },
+      { name: "Kelurahan Bangka Belitung Laut", lat: -0.0591, lng: 109.3566, rt: 52, rw: 13, penduduk: 48500 },
+      { name: "Kelurahan Bansir Darat", lat: -0.0758, lng: 109.3357, rt: 45, rw: 11, penduduk: 43394 },
+      { name: "Kelurahan Bansir Laut", lat: -0.0526, lng: 109.3501, rt: 45, rw: 11, penduduk: 43394 }
     ]
   },
   {
@@ -61,12 +61,12 @@ const dataPontianak = [
     center: [-0.0150, 109.3550],
     points: [
       { name: "Kelurahan Banjar Serasan", lat: -0.0120, lng: 109.3490, rt: 60, rw: 12, penduduk: 13200 },
-      { name: "Kelurahan Dalambugis", lat: -0.0160, lng: 109.3530, rt: 58, rw: 12, penduduk: 12850 },
-      { name: "Kelurahan Paritmayor", lat: -0.0145, lng: 109.3570, rt: 62, rw: 13, penduduk: 13500 },
+      { name: "Kelurahan Dalam Bugis", lat: -0.0160, lng: 109.3530, rt: 58, rw: 12, penduduk: 12850 },
+      { name: "Kelurahan Parit Mayor", lat: -0.0145, lng: 109.3570, rt: 62, rw: 13, penduduk: 13500 },
       { name: "Kelurahan Saigon", lat: -0.0130, lng: 109.3520, rt: 64, rw: 13, penduduk: 14120 },
-      { name: "Kelurahan Tambelansampit", lat: -0.0155, lng: 109.3600, rt: 55, rw: 11, penduduk: 12100 },
-      { name: "Kelurahan Tanjunghulu", lat: -0.0175, lng: 109.3590, rt: 61, rw: 12, penduduk: 13275 },
-      { name: "Kelurahan Tanjunghlir", lat: -0.0185, lng: 109.3610, rt: 61, rw: 13, penduduk: 13300 }
+      { name: "Kelurahan Tambelan Sampit", lat: -0.0155, lng: 109.3600, rt: 55, rw: 11, penduduk: 12100 },
+      { name: "Kelurahan Tanjung Hulu", lat: -0.0175, lng: 109.3590, rt: 61, rw: 12, penduduk: 13275 },
+      { name: "Kelurahan Tanjung Hilir", lat: -0.0185, lng: 109.3610, rt: 61, rw: 13, penduduk: 13300 }
     ]
   },
   {
