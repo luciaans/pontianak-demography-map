@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="img/logo-diskominfo.png">
+  <title>Home - Peta Kependudukan Kota Pontianak</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+    }
+
+    .glass {
+      background: rgba(15, 23, 42, .85);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, .08);
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .fade-in-up {
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .fade-in {
+      animation: fadeIn 1s ease-out;
+    }
+
+    .hero-section {
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.25);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .btn-primary:hover::before {
+      width: 400px;
+      height: 400px;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 40px rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-secondary {
+      border: 2px solid #10b981;
+      transition: all 0.4s ease;
+      background: rgba(16, 185, 129, 0.05);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(16, 185, 129, 0.15);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.2);
+    }
+
+    .stats-card {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.9) 100%);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stats-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #10b981, #34d399, #10b981);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .stats-card:hover::before {
+      opacity: 1;
+    }
+
+    .stats-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(16, 185, 129, 0.5);
+      box-shadow: 0 20px 40px rgba(16, 185, 129, 0.2);
+    }
+
+    .stats-number {
+      font-size: 3rem;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      text-shadow: 0 0 30px rgba(16, 185, 129, 0.3);
+    }
+
+    .stats-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: rgba(148, 163, 184, 0.8);
+    }
+
+    .section-badge {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.05));
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    .city-image-container {
+      position: relative;
+      overflow: hidden;
+      border-radius: 2rem;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+      border: 2px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .city-image-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(180deg, transparent 0%, rgba(15, 23, 42, 0.7) 100%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .city-image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .city-image-container:hover img {
+      transform: scale(1.05);
+    }
+
+    .info-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      padding: 2rem;
+      background: linear-gradient(180deg, transparent 0%, rgba(15, 23, 42, 0.95) 50%);
+    }
+
+    .nav-link {
+      transition: all 0.3s ease;
+      position: relative;
+      padding: 0.5rem 0;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #10b981, transparent);
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+    .nav-link.active {
+      color: #10b981;
+    }
+
+    .logo-glow {
+      filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.4));
+    }
+
+    .feature-card {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.08), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .feature-card:hover::before {
+      left: 100%;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      border-color: rgba(16, 185, 129, 0.5);
+      box-shadow: 0 20px 40px rgba(16, 185, 129, 0.15);
+    }
+
+    .icon-bounce {
+      transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover .icon-bounce {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    @media (max-width: 768px) {
+      .stats-number {
+        font-size: 2rem;
+      }
+      .hero-section {
+        min-height: auto;
+        padding: 2rem 0;
+      }
+    }
+  </style>
+</head>
+
+<body class="text-slate-200">
+  
+  <!-- Navigation -->
+  <nav class="glass fixed top-0 left-0 right-0 z-50 fade-in border-b border-slate-700/50">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <img src="/img/logo-diskominfo.png" alt="Logo" 
+            class="h-11 w-auto object-contain logo-glow"
+            onerror="this.src='https://via.placeholder.com/44x44/10b981/ffffff?text=DK'">
+          <div>
+            <span class="font-bold text-white text-sm md:text-base">Diskominfo Pontianak</span>
+            <p class="text-xs text-slate-400 hidden md:block">Sistem Informasi Kependudukan</p>
+          </div>
+        </div>
+        <div class="flex gap-8 text-sm font-semibold">
+          <a href="#" class="nav-link active">Home</a>
+          <a href="dashboard.html" class="nav-link text-slate-300 hover:text-emerald-400">Dashboard</a>
+          <a href="index.html" class="nav-link text-slate-300 hover:text-emerald-400">Peta</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-section px-4 md:px-6 pt-24">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        
+        <!-- Left Content -->
+        <div class="text-center lg:text-left fade-in-up space-y-8">
+          <div class="inline-block section-badge px-5 py-2.5 rounded-full">
+            <span class="text-emerald-400 text-sm font-bold flex items-center gap-2">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/>
+              </svg>
+              Sistem Informasi Terpadu
+            </span>
+          </div>
+          
+          <h1 class="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-tight">
+            Selamat Datang di<br>
+            <span class="gradient-text">Peta Kependudukan</span><br>
+            <span class="text-3xl md:text-4xl lg:text-5xl">Kota Pontianak</span>
+          </h1>
+          
+          <p class="text-base md:text-lg lg:text-xl text-slate-300 leading-relaxed">
+            Visualisasi data kependudukan yang 
+            <span class="text-emerald-400 font-bold">interaktif</span> dan 
+            <span class="text-emerald-400 font-bold">informatif</span> 
+            untuk mendukung transparansi dan keterbukaan informasi publik.
+          </p>
+
+          <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
+            <a href="index.html" class="btn-primary px-8 md:px-10 py-4 md:py-5 rounded-2xl font-bold text-white text-base md:text-lg inline-flex items-center justify-center gap-3 relative z-10 shadow-2xl">
+              <svg class="w-5 h-5 md:w-6 md:h-6" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+              </svg>
+              Lihat Peta Interaktif
+            </a>
+            <a href="dashboard.html" class="btn-secondary px-8 md:px-10 py-4 md:py-5 rounded-2xl font-bold text-emerald-400 text-base md:text-lg inline-flex items-center justify-center gap-3">
+              <svg class="w-5 h-5 md:w-6 md:h-6" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
+              </svg>
+              Dashboard Data
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Content - City Image with Stats -->
+        <div class="fade-in-up" style="animation-delay: 0.2s">
+          <div class="city-image-container" style="height: 550px;">
+            <!-- Ganti URL ini dengan foto Kota Pontianak yang sebenarnya -->
+            <img 
+              src="img/kota-pontianak.jpg" 
+              alt="Kota Pontianak"
+              onerror="this.src='https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=800&q=80'"
+            >
+            
+            <!-- Info Overlay -->
+            <div class="info-overlay">
+              <div class="mb-6">
+                <h3 class="text-2xl md:text-3xl font-black text-white mb-2">Kota Pontianak</h3>
+                <p class="text-sm md:text-base text-slate-300">Kota Khatulistiwa • Kalimantan Barat</p>
+              </div>
+              
+              <!-- Stats Grid -->
+              <div class="grid grid-cols-3 gap-3 md:gap-4">
+                <div class="stats-card p-4 md:p-5 rounded-2xl text-center">
+                  <div class="stats-number gradient-text mb-2">6</div>
+                  <div class="stats-label text-xs">Kecamatan</div>
+                </div>
+                <div class="stats-card p-4 md:p-5 rounded-2xl text-center">
+                  <div class="stats-number gradient-text mb-2">586</div>
+                  <div class="stats-label text-xs">RW</div>
+                </div>
+                <div class="stats-card p-4 md:p-5 rounded-2xl text-center">
+                  <div class="stats-number gradient-text mb-2">2.6K</div>
+                  <div class="stats-label text-xs">RT</div>
+                </div>
+              </div>
+
+              <!-- Total Population -->
+              <div class="glass px-4 md:px-6 py-3 md:py-4 rounded-2xl border border-emerald-500/30 mt-4">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-xs text-slate-400 mb-1">Total Penduduk</p>
+                    <p class="text-xl md:text-2xl font-black gradient-text">735,146 Jiwa</p>
+                  </div>
+                  <div class="w-12 h-12 bg-gradient-to-br from-emerald-500/20 to-emerald-600/10 rounded-xl flex items-center justify-center">
+                    <svg class="w-7 h-7 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Info Section -->
+  <section class="py-20 px-4 md:px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16 fade-in-up">
+        <div class="inline-block section-badge px-5 py-2.5 rounded-full mb-6">
+          <span class="text-emerald-400 text-sm font-bold">FITUR UNGGULAN</span>
+        </div>
+        <h2 class="text-4xl md:text-5xl font-black text-white mb-6">
+          Kenapa Memilih <span class="gradient-text">Sistem Kami?</span>
+        </h2>
+        <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+          Platform yang dirancang untuk memberikan pengalaman terbaik dalam mengakses dan menganalisis data kependudukan
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        
+        <!-- Feature 1 -->
+        <div class="feature-card glass p-8 rounded-3xl fade-in-up" style="animation-delay: 0.1s">
+          <div class="w-16 h-16 bg-gradient-to-br from-emerald-500/20 to-emerald-600/10 rounded-2xl flex items-center justify-center mb-6 icon-bounce">
+            <svg class="w-9 h-9 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-4">Peta Interaktif</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Visualisasi wilayah dengan peta yang dapat di-zoom, di-klik, dan menampilkan detail informasi setiap lokasi secara real-time.
+          </p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="feature-card glass p-8 rounded-3xl fade-in-up" style="animation-delay: 0.2s">
+          <div class="w-16 h-16 bg-gradient-to-br from-blue-500/20 to-blue-600/10 rounded-2xl flex items-center justify-center mb-6 icon-bounce">
+            <svg class="w-9 h-9 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-4">Dashboard Analitik</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Grafik dan statistik komprehensif yang memudahkan analisis data kependudukan untuk pengambilan keputusan berbasis data.
+          </p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="feature-card glass p-8 rounded-3xl fade-in-up" style="animation-delay: 0.3s">
+          <div class="w-16 h-16 bg-gradient-to-br from-purple-500/20 to-purple-600/10 rounded-2xl flex items-center justify-center mb-6 icon-bounce">
+            <svg class="w-9 h-9 text-purple-400" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-4">Data Akurat</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Informasi kependudukan yang bersumber dari perangkat daerah terkait dan diperbarui secara berkala untuk akurasi data.
+          </p>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="feature-card glass p-8 rounded-3xl fade-in-up" style="animation-delay: 0.4s">
+          <div class="w-16 h-16 bg-gradient-to-br from-amber-500/20 to-amber-600/10 rounded-2xl flex items-center justify-center mb-6 icon-bounce">
+            <svg class="w-9 h-9 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.123.489.804.804A1 1 0 0113 18H7a1 1 0 01-.707-1.707l.804-.804L7.22 15H5a2 2 0 01-2-2V5zm5.771 7H5V5h10v7H8.771z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-4">Responsive Design</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Tampilan yang optimal di semua perangkat - desktop, tablet, dan smartphone untuk akses kapan saja, di mana saja.
+          </p>
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="feature-card glass p-8 rounded-3xl fade-in-up" style="animation-delay: 0.5s">
+          <div class="w-16 h-16 bg-gradient-to-br from-red-500/20 to-red-600/10 rounded-2xl flex items-center justify-center mb-6 icon-bounce">
+            <svg class="w-9 h-9 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732l3.354-1.935 1.18-4.455A1 1 0 0112 2z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-4">Open Data</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Mendukung transparansi dan keterbukaan informasi publik sesuai dengan prinsip Satu Data Indonesia yang terintegrasi.
+          </p>
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="feature-card glass p-8 rounded-3xl fade-in-up" style="animation-delay: 0.6s">
+          <div class="w-16 h-16 bg-gradient-to-br from-teal-500/20 to-teal-600/10 rounded-2xl flex items-center justify-center mb-6 icon-bounce">
+            <svg class="w-9 h-9 text-teal-400" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clip-rule="evenodd"/>
+              <path d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-4">Mudah Digunakan</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Interface yang intuitif dan user-friendly memudahkan siapa saja untuk mengakses dan memahami data kependudukan dengan cepat.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-20 px-4 md:px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="glass p-12 md:p-16 rounded-[2.5rem] text-center fade-in-up relative overflow-hidden border-2 border-emerald-500/20">
+        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-emerald-500 to-transparent"></div>
+        <div class="relative z-10">
+          <div class="inline-block section-badge px-5 py-2.5 rounded-full mb-6">
+            <span class="text-emerald-400 text-sm font-bold">MULAI SEKARANG</span>
+          </div>
+          <h2 class="text-4xl md:text-5xl font-black text-white mb-6">
+            Siap Menjelajahi Data <br class="hidden md:block"><span class="gradient-text">Kependudukan?</span>
+          </h2>
+          <p class="text-slate-300 text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
+            Akses informasi lengkap tentang data kependudukan Kota Pontianak dengan visualisasi yang interaktif dan mudah dipahami
+          </p>
+          <a href="index.html" class="btn-primary px-12 py-6 rounded-2xl font-bold text-white text-lg inline-flex items-center justify-center gap-3 relative z-10 shadow-2xl">
+            Mulai Eksplorasi
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="glass rounded-2xl p-8 mt-8">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
+        <div>
+          <h4 class="text-emerald-400 font-bold text-lg mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+              <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+            </svg>
+            Kontak & Layanan
+          </h4>
+          <div class="text-slate-300 text-sm space-y-3">
+            <p class="flex items-start gap-2">
+              <svg class="w-4 h-4 mt-1 flex-shrink-0 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd"
+                  d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                  clip-rule="evenodd" />
+              </svg>
+              <span>Jl. Rahadi Usman No.3, Kota Pontianak, Kalimantan Barat 78111</span>
+            </p>
+            <p class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+              </svg>
+              <span>(0561) 8181771</span>
+            </p>
+            <p class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+              </svg>
+              <span>diskominfo@pontianak.go.id</span>
+            </p>
+            <p class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-11a.75.75 0 00-1.5 0v3.25c0 .414.336.75.75.75h2.5a.75.75 0 000-1.5h-1.75V7z"
+                  clip-rule="evenodd" />
+              </svg>
+              <span>Jam Layanan 07.15 – 15.15 WIB</span>
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="text-emerald-400 font-bold text-lg mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2c-4.418 0-8 1.343-8 3s3.582 3 8 3 8-1.343 8-3-3.582-3-8-3z" />
+              <path d="M2 7v3c0 1.657 3.582 3 8 3s8-1.343 8-3V7c-1.79 1.258-5.07 2-8 2s-6.21-.742-8-2z" />
+              <path d="M2 12v3c0 1.657 3.582 3 8 3s8-1.343 8-3v-3c-1.79 1.258-5.07 2-8 2s-6.21-.742-8-2z" />
+            </svg>
+            Informasi Data
+          </h4>
+          <div class="text-slate-300 text-sm space-y-3">
+            <p class="leading-relaxed">Visualisasi ini menyajikan data kependudukan dan administrasi wilayah Kota
+              Pontianak yang dikelola dalam kerangka <span class="text-emerald-400 font-semibold">Statistik Sektoral</span>.
+              Data dihimpun dan dikoordinasikan oleh
+              <span class="font-semibold">Bidang Data Statistik Sektoral</span>
+              <span class="font-semibold">Dinas Komunikasi dan Informatika Kota Pontianak</span>
+              sebagai bagian dari penyediaan data publik yang terintegrasi.
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="text-emerald-400 font-bold text-lg mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd"
+                d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5a2 2 0 11-2.828-2.828l3-3z"
+                clip-rule="evenodd" />
+            </svg>
+            Link Terkait
+          </h4>
+
+          <div class="text-sm space-y-3">
+            <a href="https://pontianak.go.id/" target="_blank" class="flex items-center gap-2 text-slate-300 hover:text-emerald-400 transition-colors">
+              <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+              </svg>
+              <span>Portal Resmi Pemkot Pontianak</span>
+            </a>
+
+            <a href="https://diskominfo.pontianak.go.id/" target="_blank" class="flex items-center gap-2 text-slate-300 hover:text-emerald-400 transition-colors">
+              <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+              </svg>
+              <span>Diskominfo Kota Pontianak</span>
+            </a>
+
+            <a href="https://satudata.pontianak.go.id/" target="_blank" class="flex items-center gap-2 text-slate-300 hover:text-emerald-400 transition-colors">
+              <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+              </svg>
+              <span>Satu Data Kota Pontianak</span>
+            </a>
+
+            <a href="https://data.go.id/" target="_blank" class="flex items-center gap-2 text-slate-300 hover:text-emerald-400 transition-colors">
+              <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+              </svg>
+              <span>Satu Data Indonesia</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t border-slate-700 pt-6">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
+          <p class="text-slate-300 text-center md:text-left">
+            © 2025 <span class="font-bold text-white">Dinas Komunikasi dan Informatika Kota Pontianak</span>
+          </p>
+          <p class="text-xs text-slate-400">
+            Developed by
+            <a href="https://github.com/luciaans" target="_blank" rel="noopener noreferrer"
+              class="text-emerald-400 font-semibold hover:underline">
+              lucians
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
