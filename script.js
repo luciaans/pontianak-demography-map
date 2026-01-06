@@ -330,3 +330,20 @@ setInterval(() => {
   loadNews();
   console.log('Berita di-refresh:', new Date().toLocaleTimeString('id-ID'));
 }, 10000); 
+
+ // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenuBtn.classList.toggle('active');
+      mobileMenu.classList.toggle('active');
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!mobileMenuBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
+        mobileMenuBtn.classList.remove('active');
+        mobileMenu.classList.remove('active');
+      }
+    });
