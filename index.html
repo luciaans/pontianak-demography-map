@@ -18,7 +18,7 @@
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="style.css">
-  
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
 
@@ -64,8 +64,13 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
     }
 
     .fade-in {
@@ -184,15 +189,14 @@
 </head>
 
 <body class="bg-slate-900 text-slate-200 p-4 md:p-6">
-  
+
   <!-- Navigation (diperbarui dengan mobile navbar seperti home.html) -->
   <nav class="glass fixed top-0 left-0 right-0 z-50 fade-in border-b border-slate-700/50">
     <div class="max-w-7xl mx-auto px-4 md:px-6 py-4">
       <!-- Desktop Navbar -->
       <div class="navbar-desktop hidden md:flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <img src="/img/logo-diskominfo.png" alt="Logo" 
-            class="h-11 w-auto object-contain logo-glow"
+          <img src="/img/logo-diskominfo.png" alt="Logo" class="h-11 w-auto object-contain logo-glow"
             onerror="this.src='https://via.placeholder.com/44x44/10b981/ffffff?text=DK'">
           <div>
             <span class="font-bold text-white text-sm md:text-base">PONIVA | Pontianak Interactive Visualization</span>
@@ -216,7 +220,7 @@
             <p class="text-xs text-slate-400">Diskominfo Pontianak</p>
           </div>
         </div>
-        
+
         <button id="mobile-menu-toggle" class="hamburger" aria-label="Toggle menu">
           <span></span>
           <span></span>
@@ -228,8 +232,11 @@
     <!-- Mobile Menu & Overlay -->
     <div id="nav-overlay" class="nav-overlay md:hidden"></div>
     <div id="mobile-menu" class="mobile-menu md:hidden">
-      <a href="home.html" class="block mobile-menu-item nav-link text-slate-300 hover:text-emerald-400 font-semibold text-lg">Beranda</a>
-      <a href="dashboard.html" class="block mobile-menu-item nav-link text-slate-300 hover:text-emerald-400 font-semibold text-lg">Dashboard Kependudukan</a>
+      <a href="home.html"
+        class="block mobile-menu-item nav-link text-slate-300 hover:text-emerald-400 font-semibold text-lg">Beranda</a>
+      <a href="dashboard.html"
+        class="block mobile-menu-item nav-link text-slate-300 hover:text-emerald-400 font-semibold text-lg">Dashboard
+        Kependudukan</a>
       <a href="index.html" class="block mobile-menu-item nav-link active font-semibold text-lg">Peta Kependudukan</a>
     </div>
   </nav>
@@ -279,9 +286,12 @@
             Panduan
           </h3>
           <div class="text-xs text-slate-300 space-y-2">
-            <p><span class="text-emerald-400 font-semibold">Pilih wilayah</span> untuk melihat informasi dan titik data</p>
-            <p><span class="text-emerald-400 font-semibold">Sentuh atau arahkan</span> pada wilayah untuk menyorot area</p>
-            <p><span class="text-emerald-400 font-semibold">Data akan ditampilkan di peta</span> secara otomatis sesuai wilayah yang dipilih</p>
+            <p><span class="text-emerald-400 font-semibold">Pilih wilayah</span> untuk melihat informasi dan titik data
+            </p>
+            <p><span class="text-emerald-400 font-semibold">Sentuh atau arahkan</span> pada wilayah untuk menyorot area
+            </p>
+            <p><span class="text-emerald-400 font-semibold">Data akan ditampilkan di peta</span> secara otomatis sesuai
+              wilayah yang dipilih</p>
           </div>
         </div>
 
@@ -516,7 +526,7 @@
     const mobileMenu = document.getElementById('mobile-menu');
     const navOverlay = document.getElementById('nav-overlay');
 
-    mobileMenuToggle.addEventListener('click', function() {
+    mobileMenuToggle.addEventListener('click', function () {
       const isOpen = mobileMenu.classList.contains('open');
       if (isOpen) {
         closeMobileMenu();
@@ -545,11 +555,12 @@
       item.addEventListener('click', closeMobileMenu);
     });
 
-    document.addEventListener('keydown', function(e) {
+    document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') {
         closeMobileMenu();
       }
     });
   </script>
 </body>
+
 </html>
