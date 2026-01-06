@@ -7,7 +7,7 @@
 
   <link rel="icon" type="image/png" href="img/logo-diskominfo.png">
 
-  <title> Peta Kependudukan Kota Pontianak </title>
+  <title>Peta Kependudukan Kota Pontianak</title>
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css">
@@ -71,33 +71,166 @@
     .fade-in {
       animation: fadeIn 1s ease-out;
     }
+
+    /* Mobile Navbar Styles (sama seperti di home.html) */
+    .mobile-menu {
+      display: none;
+    }
+
+    .mobile-menu.open {
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      .navbar-desktop {
+        display: none;
+      }
+
+      .navbar-mobile {
+        display: flex !important;
+      }
+
+      .mobile-menu {
+        position: fixed;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(15, 23, 42, .95);
+        backdrop-filter: blur(20px);
+        border-top: 1px solid rgba(255, 255, 255, .08);
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 40;
+      }
+
+      .mobile-menu.open {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .mobile-menu-item {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, .05);
+        transition: all 0.2s ease;
+      }
+
+      .mobile-menu-item:last-child {
+        border-bottom: none;
+      }
+
+      .mobile-menu-item:hover {
+        background: rgba(16, 185, 129, 0.1);
+        padding-left: 2rem;
+      }
+
+      .hamburger {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        width: 24px;
+        height: 20px;
+        cursor: pointer;
+      }
+
+      .hamburger span {
+        width: 100%;
+        height: 3px;
+        background: #10b981;
+        border-radius: 2px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transform-origin: center;
+      }
+
+      .hamburger.open span:nth-child(1) {
+        transform: rotate(45deg) translate(6px, 6px);
+      }
+
+      .hamburger.open span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .hamburger.open span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -5px);
+      }
+
+      .nav-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 30;
+      }
+
+      .nav-overlay.open {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+
+    @media (min-width: 769px) {
+      .navbar-mobile {
+        display: none !important;
+      }
+    }
   </style>
 </head>
 
-
 <body class="bg-slate-900 text-slate-200 p-4 md:p-6">
   
-  <!-- Navigation -->
+  <!-- Navigation (diperbarui dengan mobile navbar seperti home.html) -->
   <nav class="glass fixed top-0 left-0 right-0 z-50 fade-in border-b border-slate-700/50">
     <div class="max-w-7xl mx-auto px-4 md:px-6 py-4">
-      <div class="flex items-center justify-between">
+      <!-- Desktop Navbar -->
+      <div class="navbar-desktop hidden md:flex items-center justify-between">
         <div class="flex items-center gap-3">
           <img src="/img/logo-diskominfo.png" alt="Logo" 
             class="h-11 w-auto object-contain logo-glow"
             onerror="this.src='https://via.placeholder.com/44x44/10b981/ffffff?text=DK'">
           <div>
-            <span class="font-bold text-white text-sm md:text-base">PONIVA | Pontianak Interactive
-                            Visualization</span>
-            <p class="text-xs text-slate-400 hidden md:block">Dinas Komunikasi dan Informatika Kota
-                            Pontianak</p>
+            <span class="font-bold text-white text-sm md:text-base">PONIVA | Pontianak Interactive Visualization</span>
+            <p class="text-xs text-slate-400 hidden md:block">Dinas Komunikasi dan Informatika Kota Pontianak</p>
           </div>
         </div>
         <div class="flex gap-8 text-sm font-semibold">
-          <a href="home.html" class="nav-link text-slate-300 hover:text-emerald-400">Home</a>
-          <a href="dashboard.html" class="nav-link text-slate-300 hover:text-emerald-400">Dashboard</a>
-          <a href="index.html" class="nav-link active">Peta</a>
+          <a href="home.html" class="nav-link text-slate-300 hover:text-emerald-400">Beranda</a>
+          <a href="dashboard.html" class="nav-link text-slate-300 hover:text-emerald-400">Dashboard Kependudukan</a>
+          <a href="index.html" class="nav-link active">Peta Kependudukan</a>
         </div>
       </div>
+
+      <!-- Mobile Navbar -->
+      <div class="navbar-mobile md:hidden flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <img src="/img/logo-diskominfo.png" alt="Logo" class="h-9 w-auto object-contain logo-glow"
+            onerror="this.src='https://via.placeholder.com/36x36/10b981/ffffff?text=DK'">
+          <div>
+            <span class="font-bold text-white text-sm">PONIVA</span>
+            <p class="text-xs text-slate-400">Diskominfo Pontianak</p>
+          </div>
+        </div>
+        
+        <button id="mobile-menu-toggle" class="hamburger" aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu & Overlay -->
+    <div id="nav-overlay" class="nav-overlay md:hidden"></div>
+    <div id="mobile-menu" class="mobile-menu md:hidden">
+      <a href="home.html" class="block mobile-menu-item nav-link text-slate-300 hover:text-emerald-400 font-semibold text-lg">Beranda</a>
+      <a href="dashboard.html" class="block mobile-menu-item nav-link text-slate-300 hover:text-emerald-400 font-semibold text-lg">Dashboard Kependudukan</a>
+      <a href="index.html" class="block mobile-menu-item nav-link active font-semibold text-lg">Peta Kependudukan</a>
     </div>
   </nav>
 
@@ -136,7 +269,6 @@
           <div id="rank-list" class="space-y-2"></div>
         </div>
 
-
         <div class="glass p-5 rounded-2xl">
           <h3 class="text-sm font-bold uppercase text-emerald-400 mb-4 flex items-center gap-2">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -147,14 +279,10 @@
             Panduan
           </h3>
           <div class="text-xs text-slate-300 space-y-2">
-            <p><span class="text-emerald-400 font-semibold">Pilih wilayah</span> untuk melihat informasi dan titik
-              data</p>
-            <p><span class="text-emerald-400 font-semibold">Sentuh atau arahkan</span> pada wilayah untuk menyorot
-              area</p>
-            <p><span class="text-emerald-400 font-semibold">Data akan ditampilkan di peta</span> secara otomatis
-              sesuai wilayah yang dipilih</p>
+            <p><span class="text-emerald-400 font-semibold">Pilih wilayah</span> untuk melihat informasi dan titik data</p>
+            <p><span class="text-emerald-400 font-semibold">Sentuh atau arahkan</span> pada wilayah untuk menyorot area</p>
+            <p><span class="text-emerald-400 font-semibold">Data akan ditampilkan di peta</span> secara otomatis sesuai wilayah yang dipilih</p>
           </div>
-
         </div>
 
         <div class="glass p-5 rounded-2xl">
@@ -244,12 +372,12 @@
           </div>
         </div>
       </section>
-
-
     </div>
 
     <footer class="glass rounded-2xl p-8 mt-8">
+      <!-- Footer content tetap sama seperti aslinya -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
+        <!-- ... (footer content tidak diubah) ... -->
         <div>
           <h4 class="text-emerald-400 font-bold text-lg mb-4 flex items-center gap-2">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -312,7 +440,6 @@
             </p>
           </div>
         </div>
-
 
         <div>
           <h4 class="text-emerald-400 font-bold text-lg mb-4 flex items-center gap-2">
@@ -379,11 +506,50 @@
         </div>
       </div>
     </footer>
-
   </div>
 
   <script src="script.js"></script>
 
-</body>
+  <!-- Script untuk mobile menu (sama seperti di home.html) -->
+  <script>
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const navOverlay = document.getElementById('nav-overlay');
 
+    mobileMenuToggle.addEventListener('click', function() {
+      const isOpen = mobileMenu.classList.contains('open');
+      if (isOpen) {
+        closeMobileMenu();
+      } else {
+        openMobileMenu();
+      }
+    });
+
+    navOverlay.addEventListener('click', closeMobileMenu);
+
+    function openMobileMenu() {
+      mobileMenuToggle.classList.add('open');
+      mobileMenu.classList.add('open');
+      navOverlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMobileMenu() {
+      mobileMenuToggle.classList.remove('open');
+      mobileMenu.classList.remove('open');
+      navOverlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('.mobile-menu-item').forEach(item => {
+      item.addEventListener('click', closeMobileMenu);
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeMobileMenu();
+      }
+    });
+  </script>
+</body>
 </html>
